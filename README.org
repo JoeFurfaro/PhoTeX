@@ -1,0 +1,12 @@
+#+TITLE: Microsoft Hackathon - PSTex
+#+DESCRIPTION: A custom language meant for tech savvy graphic designers who need to design standardized vector graphics for their projects.
+#+AUTHOR: Evan Desjardine, Joe Furfaro, Daniel Genkin, Mark Hutchison, L. Yao
+#+DATE: \today
+#+LANGUAGE: en
+#+OPTIONS: toc:nil _:nil ^:nil
+
+* Idea
+
+A custom language meant for tech savvy graphic designers who need to design standardized vector graphics for their projects. This would be a langauge similar in functionality to LaTeX with the purpose of compiling to a vector format file like an SVG.
+
+The designer would type out in a plaintext language the commands to create the vector graphics. These commands would then be compiled down to objects in the language and then formated into an SVG file format.
