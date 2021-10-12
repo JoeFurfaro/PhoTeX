@@ -1,0 +1,75 @@
+Classes:
+    Stroke {
+        thickness := int for thickness in pixels
+        color := the color of the stroke
+        opacity := float from 0-1 representing opacity
+    }
+
+    Fill {
+        color := the color of the fill
+        opacity := float from 0-1 representing opacity
+    }
+
+    Font {
+        name := the name of the font
+        size := the size of the font
+        weight := thin, regular, or bold representing font weight
+    }
+
+    Item {
+        parent := parent of item or null if canvas
+        children := list of children items in order they should be rendered
+        rotation := an angle representing how much the item is rotated
+    }
+
+    Canvas extends Item {
+        file_name := the basename of file (eg. the poop in poop.png)
+        file_format := svg, png or jpg
+        size := (width, height) of the canvas in pixels
+    }
+
+    Shape extends Item {
+        stroke := a stroke instance or null
+        fill := a fill instance or null
+        clipped := a boolean representing whether or not the shape clips its children
+    }
+
+    Image extends Item {
+        path := path to image relative to code file
+        size := (width, height) in pixels to scale the image to
+        position := (x, y) pixel position to place center of image on relative to parent
+    }
+
+    Text extends Item {
+        text := the string to render
+        font := a font instance to use
+        color := the color to render the text in
+        align := left, center, or right where the text will be aligned 
+        position := (x, y) pixel position to place top-[align] of text on relative to parent
+        width := pixel width to start wrapping text or null if no wrapping
+    }
+
+    Polygon extends Shape {
+        points := list of (x, y) pixel coordinates in order to be connected
+            (x, y coordinates relative to parent center)
+    }
+
+    Ellipse extends Shape {
+        position := (x, y) pixel position of the ellipse relative to parent
+        x_radius := x radius of the ellipse
+        y_radius := y radius of the ellipse
+    }
+
+    Rect extends Polygon {
+        width := width of the rect
+        height := height of the rect
+    }
+
+    Line extends Polygon {
+        start := start point (x1, y1) of the line
+        end := end point (x2, y2) of the line
+    }
+
+    Circle extends Ellipse {
+        radius := radius of the circle
+    }
