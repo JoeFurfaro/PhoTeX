@@ -1,0 +1,43 @@
+?start: atom
+
+?sum: product
+    | sum "+" product         -> add
+    | sum "-" product         -> sub
+
+?product: atom
+    | product "*" atom        -> mul
+    | product "/" atom        -> div
+
+?atom: SIGNED_INT [unit]   -> number
+     | "-" atom               -> neg
+     | "(" sum ")"          // -> sub_eval // uncomment to have () add new layers
+
+!unit: "h" | "w" | "H" | "W" -> unit
+
+%import common.SIGNED_INT
+%import common.WS_INLINE
+
+%ignore WS_INLINE
+
+// TEST CASES THAT SHOULD PASS:
+// 5
+// 5h
+// 0H
+// 12143523642647575887258824686485682457540W
+// -3
+// +3
+// (12H)
+// (12w+5h)
+// (2+(3+4h*(5w+6w/8)))
+
+// TEST CASES THAT SHOULD FAIL
+// a
+// (((())))
+// (()5
+// 5.0
+// h
+// w
+// 12h+5w
+// (12+5)h
+// .5
+// ++3
