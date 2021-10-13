@@ -13,7 +13,11 @@ def main():
         exit()
 
     with open(f) as fileContents:
-        print(fileContents.read())
+
+        code = str(fileContents.read()) + "\n" #add a new line to ease grammar checking
+
+        print(code)
+
         # TODO DO THE MAGIC
 
 main()
