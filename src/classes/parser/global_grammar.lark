@@ -39,7 +39,23 @@ STATIC_MODIFIER: "left"
 outlined: "outlined" _IWS color _IWS thickness [_IWS opacity]
 rotated: "rotated" _IWS angle
 
-expression: INT
+?sum: product
+    | sum "+" product         -> add
+    | sum "-" product         -> sub
+
+?product: atom
+    | product "*" atom        -> mul
+    | product "/" atom        -> div
+
+?atom: SIGNED_INT [unit]   -> value
+     | "-" atom               -> neg
+     | "(" sum ")"
+
+unit: UNIT -> unit
+
+UNIT: "h" | "w"
+
+expression: atom
 _expr_tuple: expression _IWS expression
 position: _expr_tuple
 size: _expr_tuple
@@ -54,7 +70,7 @@ rect: modifier_list "rect" _IWS position _IWS size [_IWS color] [_item_body]
 circle: modifier_list "circle" _IWS position _IWS expression [_IWS color] [_item_body]
 ellipse: modifier_list "ellipse" _IWS position _IWS expression _IWS expression [_IWS color] [_item_body]
 line: "line" _IWS position _IWS position [_IWS color] [_IWS thickness]
-polygon: modifier_list "polygon" _IWS position _IWS position _IWS (position _IWS)* [_IWS color] [_item_body]
+polygon: modifier_list "polygon" _IWS position _IWS position (_IWS position)* [_IWS color] [_item_body]
 text: modifier_list "text" _IWS position _IWS font _IWS color [_IWS expression] _IWS content
 image: modifier_list "image" _IWS position _IWS expression [_IWS expression] _IWS path
 custom: identifier _IWS position [_IWS size]
