@@ -1,11 +1,11 @@
 class Vector2:
-    def __init__(self, x: float = 0, y: float = 0):
-        self.x = x
-        self.y = y
+    def __init__(self, x: int = 0, y: int = 0):
+        self.x: int = x
+        self.y: int = y
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, self.__class__):
-            return abs(self.x - other.x) < 1e-6 and abs(self.y - other.y) < 1e-6
+            return self.x == other.x and self.y == other.y
         else:
             return False
 
