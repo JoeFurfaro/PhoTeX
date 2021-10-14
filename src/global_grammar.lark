@@ -1,0 +1,85 @@
+start: (font_definition | color_definition | type_definition | canvas_definition)*
+
+identifier: CNAME
+
+_INLINE_WHITESPACE: WS_INLINE
+_WHITESPACE: WS
+_NEWLINE: NEWLINE
+
+color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE? _NEWLINE
+hex_color: HEX_COLOR
+HEX_COLOR: "#" HEXDIGIT HEXDIGIT HEXDIGIT [HEXDIGIT HEXDIGIT HEXDIGIT]
+
+font_definition: "define" _INLINE_WHITESPACE "font" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE font_name _INLINE_WHITESPACE font_size [_INLINE_WHITESPACE font_weight] _INLINE_WHITESPACE? _NEWLINE
+font_name: ESCAPED_STRING
+font_size: INT
+FONT_WEIGHT: "thin" | "regular" | "bold"
+font_weight: FONT_WEIGHT
+
+type_definition: "define" _INLINE_WHITESPACE identifier [_INLINE_WHITESPACE int_width _INLINE_WHITESPACE int_height] _item_body
+int_width: INT
+int_height: INT
+_item_body: _INLINE_WHITESPACE? "{" _WHITESPACE? item_list _WHITESPACE? "}" _NEWLINE? _WHITESPACE?
+item_list: (item _NEWLINE _WHITESPACE?)* [item _WHITESPACE?]
+
+file_name: ESCAPED_STRING
+
+canvas_definition: "canvas" _INLINE_WHITESPACE file_name _INLINE_WHITESPACE size _item_body
+
+item: rect | circle | ellipse | line | polygon | text | image | custom
+
+color: identifier | hex_color
+
+modifier_list: (modifier _INLINE_WHITESPACE)*
+modifier: STATIC_MODIFIER | outlined | rotated
+STATIC_MODIFIER: "left"
+    | "right"
+    | "center"
+    | "clipped"
+outlined: "outlined" _INLINE_WHITESPACE color _INLINE_WHITESPACE thickness [_INLINE_WHITESPACE opacity]
+rotated: "rotated" _INLINE_WHITESPACE angle
+
+?sum: product
+    | sum "+" product         -> add
+    | sum "-" product         -> sub
+
+?product: atom
+    | product "*" atom        -> mul
+    | product "/" atom        -> div
+
+?atom: SIGNED_INT [unit]   -> value
+     | "-" atom               -> neg
+     | "(" sum ")"
+
+unit: UNIT -> unit
+
+UNIT: "h" | "w"
+
+expression: atom
+_expr_tuple: expression _INLINE_WHITESPACE expression
+position: _expr_tuple
+size: _expr_tuple
+thickness: INT
+opacity: INT
+angle: SIGNED_INT
+font: CNAME
+content: ESCAPED_STRING
+path: ESCAPED_STRING
+
+rect: modifier_list "rect" _INLINE_WHITESPACE position _INLINE_WHITESPACE size [_INLINE_WHITESPACE color] [_item_body]
+circle: modifier_list "circle" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression [_INLINE_WHITESPACE color] [_item_body]
+ellipse: modifier_list "ellipse" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression _INLINE_WHITESPACE expression [_INLINE_WHITESPACE color] [_item_body]
+line: "line" _INLINE_WHITESPACE position _INLINE_WHITESPACE position [_INLINE_WHITESPACE color] [_INLINE_WHITESPACE thickness]
+polygon: modifier_list "polygon" _INLINE_WHITESPACE position _INLINE_WHITESPACE position (_INLINE_WHITESPACE position)* [_INLINE_WHITESPACE color] [_item_body]
+text: modifier_list "text" _INLINE_WHITESPACE position _INLINE_WHITESPACE font _INLINE_WHITESPACE color [_INLINE_WHITESPACE expression] _INLINE_WHITESPACE content
+image: modifier_list "image" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression [_INLINE_WHITESPACE expression] _INLINE_WHITESPACE path
+custom: identifier _INLINE_WHITESPACE position [_INLINE_WHITESPACE size]
+
+%import common.CNAME
+%import common.WS_INLINE
+%import common.WS
+%import common.ESCAPED_STRING
+%import common.INT
+%import common.SIGNED_INT
+%import common.NEWLINE
+%import common.HEXDIGIT
