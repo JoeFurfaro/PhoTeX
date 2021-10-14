@@ -14,8 +14,9 @@ class Canvas(Item):
     </svg>
     ```
     """
-    def __init__(self, children: Iterable[Item],
+    def __init__(self,
             file_name: str, file_format: str, size: Vector2,
+            children: Iterable[Item] = [],
             rotation: Union[int, float] = 0
         ):
         super().__init__(rotation)

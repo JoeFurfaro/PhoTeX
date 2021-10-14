@@ -1,30 +1,27 @@
 from typing import Union, Optional
 from collections.abc import Iterable
+from .Shape import Shape
 from ..Stroke import Stroke
 from ..Fill import Fill
 from ..Item import Item
-from .Shape import Shape
 from ..util.Vector2 import Vector2
 
 class Rect(Shape):
     """
     Rectangle shape primitive:
-    - position: Vector2
-        - x and y integers representing the position of the rectangle's center
-    - width and height integers representing the width and height of the rectangle
-
     SVG rect is positioned at the top left, so we must adjust coordinates:
     - cx = x - width//2
     - cy = y - height//2
     """
     def __init__(self,
-            children: Iterable[Item],
             clipped: bool, position: Vector2,
             width: int, height: int,
             stroke: Optional[Stroke] = None, fill: Optional[Fill] = None,
-            rotation: Union[int, float] = 0):
-        super().__init__(children, clipped, position,
-            stroke=stroke, fill=fill, rotation=rotation)
+            children: Iterable[Item] = [], rotation: Union[int, float] = 0
+        ):
+        super().__init__(clipped, position,
+                         stroke=stroke, fill=fill,
+                         children=children, rotation=rotation)
         self.width: int = width
         self.height: int = height
 
@@ -45,11 +42,5 @@ class Rect(Shape):
         # Render Children
         if len(self.children) > 0:
             s += '\n'
-            # Start group for children
-            print(str(self.depth))
-            s += ('\t' * self.depth) + \
-                f'<g transform="translate({self.position.x}, {self.position.y})">\n'
-            for child in self.children:
-                s += ('\t' * (self.depth + 1)) + child.render() + '\n'
-            s += ('\t' * self.depth) + '</g>\n'
+            s += self.render_children(self.position, self.depth, self.children)
         return s

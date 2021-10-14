@@ -1,10 +1,12 @@
-from typing import Union, List
+from typing import Union
+from collections.abc import Iterable
+from .util.Vector2 import Vector2
 
 class Item(object):
     def __init__(self, rotation: Union[int, float] = 0):
         self.rotation: Union[int, float] = rotation
         self.parent: Item = None
-        self.children: List[Item] = []
+        self.children: Iterable[Item] = []
         self.depth: int = 0
 
     def add_child(self, other) -> None:
@@ -18,3 +20,11 @@ class Item(object):
 
     def render(self) -> str:
         raise NotImplementedError
+
+    def render_children(self, center: Vector2, depth: int, children: Iterable) -> str:
+        # Start group for children
+        s = ('\t' * depth) + f'<g transform="translate({center.x}, {center.y})">\n'
+        for child in children:
+            s += ('\t' * (depth + 1)) + child.render() + '\n'
+        s += ('\t' * depth) + '</g>'
+        return s
