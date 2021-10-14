@@ -57,9 +57,15 @@ class Parser:
                 font_weight = x.children[3].children[0].value
             if self.defs.has_font(ID):
                 self.exception(ID.line, ID.column, ": Font identifier '" + ID.value + "' is already in use")
-            self.defs.add(FontDef(ID.value, font_name, font_size, font_weight))
-        print(self.defs.fonts)
 
+            # TODO: @DanielG Check if font_name and font_weight form a valid font on the machine
+            # Font weight can be "thin", "regular", or "bold"
+            # Please feel free to use any python library lol
+            if False: # Replace false with an expression equivalent to "if the font does not exist"
+                self.exception(ID.line, ID.column, ": Font family '" + font_name + "' " + font_weight + " could not be found on this system")
+            # END TODO
+            
+            self.defs.add(FontDef(ID.value, font_name, font_size, font_weight))
 
 def main():
     fileToParse = ""
