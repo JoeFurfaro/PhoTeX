@@ -47,7 +47,8 @@ class Rect(Shape):
             s += '\n'
             # Start group for children
             print(str(self.depth))
-            s += ('\t' * self.depth) + '<g>\n'
+            s += ('\t' * self.depth) + \
+                f'<g transform="translate({self.position.x}, {self.position.y})">\n'
             for child in self.children:
                 s += ('\t' * (self.depth + 1)) + child.render() + '\n'
             s += ('\t' * self.depth) + '</g>\n'
