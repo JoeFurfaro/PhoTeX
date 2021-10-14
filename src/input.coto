@@ -1,2 +1,4 @@
 define color red #FF0000
 define color blue #0000FF
+define font red "Arial Black" 12 regular
+define font arialBlack "Arial Black23" 22 bold
