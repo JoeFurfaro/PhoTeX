@@ -1,0 +1,43 @@
+PRIMITIVES -> ( rect x y w h [fillColor] [borderThickness borderColor] {itemList},
+                circle x y r [fillColor] [borderThickness borderColor] {itemList},
+                line x1 y1 x2 y2 [lineThickness] [lineColor],
+                points x1 y1 x2 y2 .. xn yn [fillColor] [borderThickness borderColor],
+                text x y [font] [align] [width height]) {literalText}
+                image
+
+INDENTIFYING KEYWORDS -> (rotated, clipped, outlined, debug)
+OTHER KEYWORDS -> (use, canvas, define, left, center, right)
+
+* A new line character will be added to EOF before intepretation
+
+Module = <UseList><DefinitionList><CanvasList>
+
+LowerCase = a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z
+UpperCase = A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z
+Letter = <LowerCase>|<UpperCase>
+Digit = 0|1|2|3|4|5|6|7|8|9|10
+
+WS = (\t|\space)(\t|\space)*
+NL = \n
+OWS = (\t|\space)*
+OBWS = (\n|\space|\t)*
+
+BaseShape = rect|circle
+ItemType = rect|circle|line|points|text|Identifier
+
+ModuleName = (<Letter>)(<Letter>|<Digit>)*
+Identifier = (<Letter>|_)(<Letter>|<Digit>|_)*
+
+UseList = <OBWS>(<UseStatement>)*<OBWS>
+UseStatement = <OBWS>use<WS><ModuleName><OWS><NL>
+
+DefinitionList = <OBWS>(<TypeDefinition>|<FontDefinition>|<ColorDefinition>)*<OBWS>
+
+TypeDefinition = <OBWS>define<WS><Identifier>[<DefineAs>]<OBWS>"{"<ItemList>"}"<BWS>
+DefineAs = <WS>as<WS><BaseShape><WS><ArgumentList>
+
+ItemList = (<Item>)*
+Item = <BWS><ItemType><WS><ArgumentList><BWS>["{"<BWS>ItemList<BWS>"}"]<BWS>
+
+ArgumentList = (<Argument><WS>)*<Argument>
+
