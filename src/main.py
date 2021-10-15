@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import requests
 from classes.parser.Definitions import *
 
 try:
@@ -58,12 +59,14 @@ class Parser:
             if self.defs.has_font(ID):
                 self.exception(ID.line, ID.column, ": Font identifier '" + ID.value + "' is already in use")
 
-            # TODO: @DanielG Check if font_name and font_weight form a valid font on the machine
-            # Font weight can be "thin", "regular", or "bold"
-            # Please feel free to use any python library lol
-            if False: # Replace false with an expression equivalent to "if the font does not exist"
-                self.exception(ID.line, ID.column, ": Font family '" + font_name + "' " + font_weight + " could not be found on this system")
-            # END TODO
+            # check if fonts exists by sending get to google fonts with the font name
+            font_url = 'https://fonts.googleapis.com/css2?family={font_name.replace(" ", "+")}' # we can add params like :wght@100 later
+            response = requests.get(font_url)
+
+            if response.status_code != 200:
+                self.exception(ID.line, ID.column, ": Font family '" + font_name + "' " + font_weight + " could not be found on Google Fonts")
+            else:
+                print(f'Using font {font_name} from: {font_url}')
             
             self.defs.add(FontDef(ID.value, font_name, font_size, font_weight))
 
