@@ -1,5 +1,4 @@
-from typing import Union, Optional
-from collections.abc import Iterable
+from typing import Union, Optional, Iterable
 from .Shape import Shape
 from ..Stroke import Stroke
 from ..Fill import Fill
