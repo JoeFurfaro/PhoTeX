@@ -14,10 +14,13 @@ class Shape(Item):
         super().__init__(rotation)
         for child in children:
             self.add_child(child)
-        self.clipped = clipped
-        self.position = position
-        self.stroke = stroke
-        self.fill = fill
+        self.clipped: bool = clipped
+        self.position: Vector2 = position
+        self.stroke: Optional[Stroke] = stroke
+        self.fill: Optional[Fill] = fill
 
     def render(self) -> str:
         raise NotImplementedError
+
+    def defs(self) -> str:
+        return f'<clipPath id="{id(self)}">\n\t'

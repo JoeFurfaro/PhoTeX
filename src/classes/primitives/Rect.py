@@ -37,9 +37,22 @@ class Rect(Shape):
             s += ' ' + self.stroke.render()
         if self.fill != None:
             s += ' ' + self.fill.render()
+        # Check if parent clippath is needed
+        if self.parent != None and hasattr(self.parent, 'clipped') and self.parent.clipped == True:
+            s += ' style="clip-path: url(#' + str(id(self.parent)) + ');"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:
             s += '\n'
             s += self.render_children(self.position, self.depth, self.children)
         return s
+
+    def defs(self) -> str:
+        rx = self.position.x - (self.width // 2)
+        ry = self.position.y - (self.height // 2)
+        s = super().defs()
+        s += f'<rect x="{rx}" y="{ry}" width="{self.width}" height="{self.height}"'
+        # Apply rotation if needed
+        if abs(self.rotation) > 1e-6:
+            s += f' transform="rotate({self.rotation} {self.position.x} {self.position.y})"'
+        return s + ' />\n</clipPath>'

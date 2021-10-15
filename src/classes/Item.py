@@ -1,5 +1,4 @@
-from typing import Union
-from collections.abc import Iterable
+from typing import Union, Iterable
 from .util.Vector2 import Vector2
 
 class Item(object):
