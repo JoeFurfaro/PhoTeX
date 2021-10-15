@@ -64,7 +64,7 @@ class Parser:
             response = requests.get(font_url)
 
             if response.status_code != 200:
-                self.exception(ID.line, ID.column, ": Font family '" + font_name + "' " + font_weight + " could not be found on Google Fonts")
+                self.exception(x.children[1].children[0].line, x.children[1].children[0].column, ": Font family '" + font_name + "' " + font_weight + " could not be found on Google Fonts")
             else:
                 print(f'Using font {font_name} from: {font_url}')
             
