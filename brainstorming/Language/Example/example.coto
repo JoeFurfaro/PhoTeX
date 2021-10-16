@@ -2,9 +2,6 @@
 /* this is a comment
 * that can span accross multiple words!! Ye ye ye */
 
-use moonstar // Module defined in "moonstar.coto" in same directory
-use shapes // Module shipped with the language stored somewhere on user's machine
-
 define font arialThin "Arial" 10 thin // Arial size 10pt thin style
 define font comicSans "Comic Sans MS" 48 // Comic sans size 48pt default (regular) style
 define font segoeBold "SegoeUI" 12 bold // Segoe UI bold size 12pt
@@ -16,30 +13,30 @@ define color moonPink #b1539f // Define color of moon
 /* This is mostly here to show that you can also
  * define new items in the definition section */
 define moonstarDesktop 1920 1080 {
-    moonstarResponsive 0 0 20h 20h (moonPink, starPink, #4b2465)
+    moonstarResponsive 0 0 20h 20h
 }
 
-canvas MoonstarLogoRelative.png 500 500 {
-    moonstarResponsive 50w 50h 100w 100h (moonPink, starPink, #4b2465)
+canvas "MoonstarLogoRelative.png" 500 500 {
+    moonstarResponsive 50w 50h 100w 100h
 }
 
-canvas MoonstarLogoWeird.png 500 500 {
-    moonstarResponsive 250 250 100w 100h (#FF0000, #00FF00, #0000FF)
+canvas "MoonstarLogoWeird.png" 500 500 {
+    moonstarResponsive 250 250 100w 100h
 }
 
-canvas MoonstarLazy.png 500 500 {
-    image lazy.png 250 250 500 500
+canvas "MoonstarLazy.png" 500 500 {
+    image 250 250 500 500 "lazy.png"
 }
 
-canvas MoonstarLogoAbsolute.png 250 250 {
-    moonstarAbsolute 125 125 (moonPink, starPink, #4b2465)
+canvas "MoonstarLogoAbsolute.png" 250 250 {
+    moonstarAbsolute 125 125 
 }
 
-canvas MoonstarDesktop.jpg 1920 1080 {
+canvas "MoonstarDesktop.jpg" 1920 1080 {
     moonstarDesktop 0 0
 }
 
-canvas test.png 500 500 { 
+canvas "test.png" 500 500 { 
     rect 0 0 50 50 red {
         circle 0 0 100 blue
     }
