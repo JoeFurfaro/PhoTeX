@@ -73,7 +73,11 @@ class Canvas(Item):
             out_file = basepath + "." + ext
             # print(out_file)
             image = svg2rlg(svg_file)
-            renderPM.drawToFile(image, out_file, fmt=ext)
+            try:
+                renderPM.drawToFile(image, out_file, fmt=ext)
+                print("Successfully exported as", ext.upper() + ".")
+            except:
+                print("Cannot export as specified file type.")
 
 
     def add_def(self, other: Union[Font, Shape]):
