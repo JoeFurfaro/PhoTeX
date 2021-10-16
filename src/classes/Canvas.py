@@ -3,8 +3,6 @@ from .Item import Item
 from .util.Vector2 import Vector2
 from .Font import Font
 from .primitives.Shape import Shape
-
-
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
 
