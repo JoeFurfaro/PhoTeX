@@ -4,6 +4,10 @@ from .util.Vector2 import Vector2
 from .Font import Font
 from .primitives.Shape import Shape
 
+
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+
 class Canvas(Item):
     """
     Top-Level class for the Canvas tree.
@@ -50,9 +54,27 @@ class Canvas(Item):
         # Close svg tag and return string
         return s + '</svg>'
 
-    def export_svg(self, filepath: str):
-        with open(filepath, 'w') as file:
+    def export(self, filepath: str):
+        file = filepath.split('.')
+        # If no file extension is specified, assume svg
+        if len(file) == 1:
+            file.append("svg")
+        ext = file[len(file) - 1]
+        basepath = ".".join(file[:len(file)-1])
+        svg_file = basepath + ".svg"
+        print(svg_file)
+
+        # An svg file will always be exported first
+        with open(svg_file, 'w') as file:
             file.write(self.render())
+
+        # Export the svg to whatever file type they specified
+        if ext != "svg":
+            out_file = basepath + "." + ext
+            # print(out_file)
+            image = svg2rlg(svg_file)
+            renderPM.drawToFile(image, out_file, fmt=ext)
+
 
     def add_def(self, other: Union[Font, Shape]):
         if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape)):

@@ -31,4 +31,4 @@ circle1.add_child(text1)
 circle2.add_child(text2)
 
 print(c.render())
-c.export_svg("test.svg")
+c.export("test.png")
