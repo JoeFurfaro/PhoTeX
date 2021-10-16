@@ -1,3 +1,5 @@
+from .. import Font
+
 class ColorDef:
     def __init__(self, ID : str, hex : str):
         self.ID = ID # Identifier
@@ -8,20 +10,22 @@ class FontDef:
         self.ID = ID # Identifier
         self.font_name = font_name # Font name
         self.font_size = font_size # Font size
+        self.font_weight = font_weight # Font weight
+        self.obj = Font(font_name, font_size, font_weight)
 
 class TypeDef:
-    def __init__(self, ID : str, width : int = None, height : int = None):
+    def __init__(self, ID : str, width : int = None, height : int = None, generator = None):
         self.ID = ID # Identifier
         self.width = width # Preset width of rect
         self.height = height # Preset height of rect
-        self.tree = [] # Tree of finalized objects the type contains
+        self.generator = generator # Tree of finalized objects the type contains
 
 class CanvasDef:
-    def __init__(self, file : str, width : int, height : int):
+    def __init__(self, file : str, width : int, height : int, obj = None):
         self.file = file # File name to export to
         self.width = width # Width of canvas
         self.height = height # Height of canvas
-        self.tree = [] # Tree of finalized objects the canvas contains
+        self.obj = obj # Tree of finalized objects the canvas contains
 
 class DefLookup:
     def __init__(self):

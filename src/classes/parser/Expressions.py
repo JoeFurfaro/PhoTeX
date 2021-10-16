@@ -58,3 +58,7 @@ class Division(BinaryOperator):
 
     def eval(self, pw, ph):
         return self.A.eval(pw, ph) + self.B.eval(pw, ph)
+
+def expression_from_tree(tree):
+    # TODO: Make this parse expressions from syntax trees
+    return Integer(0) # And update this!
