@@ -23,4 +23,4 @@ class Shape(Item):
         raise NotImplementedError
 
     def defs(self) -> str:
-        return f'<clipPath id="{id(self)}">\n\t'
+        return f'<clipPath id="{id(self)}" clipPathUnits="userSpaceOnUse">\n\t'

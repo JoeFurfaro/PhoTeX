@@ -54,5 +54,5 @@ class Canvas(Item):
         if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape)):
             if isinstance(other, Font):
                 self.defs_map[other.family] = other.defs()
-            elif isinstance(other, Shape):
+            elif isinstance(other, Shape) and other.clipped == True:
                 self.defs_map[id(other)] = other.defs()

@@ -65,34 +65,23 @@ class Text(Item):
         # Get rotation properties
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation} {self.position.x} {self.position.y})"'
-        # Check if parent clippath is needed
-        if self.parent != None and hasattr(self.parent, 'clipped') and self.parent.clipped == True:
-            s += ' style="clip-path: url(#' + str(id(self.parent)) + ');"'
         # SVG text contents
         s += f'>{self.text}</text>'
         # Render Children
         if len(self.children) > 0:
             s += '\n'
-            s += self.render_children(self.position, self.depth, self.children)
+            s += self.render_children()
         return s
 
     def defs(self):
-        # Find absolute center
-        center: Vector2 = self.position
-        p = self.parent
-        while (p != None):
-            if hasattr(p, 'position'):
-                center.x += p.position.x
-                center.y += p.position.y
-            p = p.parent
         # Create defs
         s = f'<clipPath id="{id(self)}">\n\t'
-        s += f'<text x="{center.x}" y="{center.y}" text-anchor="{self.anchor.value}" alignment-baseline="{self.baseline.value}"'
+        s += f'<text x="-{self.position.x}" y="-{self.position.y}" text-anchor="{self.anchor.value}" alignment-baseline="{self.baseline.value}"'
         # Apply text-length if width is specified
         if self.width != None:
             s += f' textLength="{self.width}"'
         # Get rotation properties
         if abs(self.rotation) > 1e-6:
-            s += f' transform="rotate({self.rotation} {center.x} {center.y})"'
+            s += f' transform="rotate({self.rotation})"'
         s += f'>{self.text}</text>\n</clipPath>'
         return s

@@ -19,7 +19,7 @@ c = Canvas("test", "svg", Vector2(500, 500), children=[], rotation=0)
 rect1 = Rect(True, Vector2(125, 250), 250, 500, stroke=Stroke('black', 5, 1), fill=Fill("white", 1), children=[], rotation=0)
 rect2 = Rect(False, Vector2(375, 250), 250, 500, stroke=Stroke('white', 5, 1), fill=Fill("black", 1), children=[], rotation=0)
 circle1 = Circle(False, Vector2(0, 0), 50, stroke=None, fill=Fill("black", 1), children=[], rotation=0)
-circle2 = Circle(False, Vector2(0, 0), 50, stroke=None, fill=Fill("white", 1), children=[], rotation=0)
+circle2 = Circle(True, Vector2(0, 0), 50, stroke=None, fill=Fill("white", 1), children=[], rotation=0)
 text1 = Text("yang", Vector2(0, 0), width = None, halign = Anchor.CENTER, valign = Baseline.CENTER, font=Font("Arial", size=12, weight=400), stroke=None, fill=Fill("white", 1), children=[], rotation=90)
 text2 = Text("yin", Vector2(0, 0), width=None, halign = Anchor.CENTER, valign = Baseline.CENTER, font=Font("Arial", size=12, weight=400), stroke=None, fill=Fill("black", 1), children=[], rotation=-90)
 

@@ -32,10 +32,14 @@ class Item(object):
     def render(self) -> str:
         raise NotImplementedError
 
-    def render_children(self, center: Vector2, depth: int, children: Iterable) -> str:
+    def render_children(self) -> str:
         # Start group for children
-        s = ('\t' * depth) + f'<g transform="translate({center.x}, {center.y})">\n'
-        for child in children:
-            s += ('\t' * (depth + 1)) + child.render() + '\n'
-        s += ('\t' * depth) + '</g>'
+        s = ('\t' * self.depth) + f'<g transform="translate({self.position.x}, {self.position.y})"'
+        # Check if clipped
+        if self.clipped == True:
+            s += f' style="clip-path: url(#{id(self)});"'
+        s += '>\n'
+        for child in self.children:
+            s += ('\t' * (self.depth + 1)) + child.render() + '\n'
+        s += ('\t' * self.depth) + '</g>'
         return s

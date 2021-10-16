@@ -1,21 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="500">
         <defs>
-                <clipPath id="2062202771632">
-                        <rect x="0" y="0" width="250" height="500" />
+                <clipPath id="2403297794128" clipPathUnits="userSpaceOnUse">
+                        <rect x="-125" y="-250" width="250" height="500" />
                 </clipPath>
-                <clipPath id="2062202772208">
-                        <rect x="250" y="0" width="250" height="500" />
-                </clipPath>
-                <clipPath id="2062202772640">
-                        <circle cx="0" cy="0" r="50" />
-                </clipPath>
-                <clipPath id="2062202773360">
-                        <circle cx="0" cy="0" r="50" />
+                <clipPath id="2403297793072" clipPathUnits="userSpaceOnUse">
+                        <circle cx="-0" cy="-0" r="50" />
                 </clipPath>
         </defs>
         <rect x="0" y="0" width="250" height="500" stroke="black" stroke-width="5" stroke-opacity="1" fill="white" fill-opacity="1" />
-        <g transform="translate(125, 250)">
-                <circle cx="0" cy="0" r="50" fill="black" fill-opacity="1" style="clip-path: url(#2062202771632);" />
+        <g transform="translate(125, 250)" style="clip-path: url(#2403297794128);">
+                <circle cx="0" cy="0" r="50" fill="black" fill-opacity="1" />
                 <g transform="translate(0, 0)">
                         <text x="0" y="0" text-anchor="middle" alignment-baseline="middle" font-family="Arial" font-size="12" font-weight="400" fill="white" fill-opacity="1" transform="rotate(90 0 0)">yang</text>
                 </g>
@@ -23,7 +17,7 @@
         <rect x="250" y="0" width="250" height="500" stroke="white" stroke-width="5" stroke-opacity="1" fill="black" fill-opacity="1" />
         <g transform="translate(375, 250)">
                 <circle cx="0" cy="0" r="50" fill="white" fill-opacity="1" />
-                <g transform="translate(0, 0)">
+                <g transform="translate(0, 0)" style="clip-path: url(#2403297793072);">
                         <text x="0" y="0" text-anchor="middle" alignment-baseline="middle" font-family="Arial" font-size="12" font-weight="400" fill="black" fill-opacity="1" transform="rotate(-90 0 0)">yin</text>
                 </g>
         </g>

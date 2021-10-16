@@ -33,29 +33,18 @@ class Circle(Shape):
             s += ' ' + self.stroke.render()
         if self.fill != None:
             s += ' ' + self.fill.render()
-        # Check if parent clippath is needed
-        if self.parent != None and hasattr(self.parent, 'clipped') and self.parent.clipped == True:
-            s += ' style="clip-path: url(#' + str(id(self.parent)) + ');"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:
             s += '\n'
-            s += self.render_children(self.position, self.depth, self.children)
+            s += self.render_children()
         return s
 
     def defs(self) -> str:
-        # Find absolute center
-        center: Vector2 = self.position
-        p = self.parent
-        while (p != None):
-            if hasattr(p, 'position'):
-                center.x += p.position.x
-                center.y += p.position.y
-            p = p.parent
         # Create defs
         s = super().defs()
-        s += f'<circle cx="{center.x}" cy="{center.y}" r="{self.radius}"'
+        s += f'<circle cx="-{self.position.x}" cy="-{self.position.y}" r="{self.radius}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
-            s += f' transform="rotate({self.rotation} {center.x} {center.y})"'
+            s += f' transform="rotate({self.rotation})"'
         return s + ' />\n</clipPath>'

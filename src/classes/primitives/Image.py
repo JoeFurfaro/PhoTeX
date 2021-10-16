@@ -24,13 +24,10 @@ class Image(Item):
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation} {self.position.x} {self.position.y})"'
-        # Check if parent clippath is needed
-        if self.parent != None and hasattr(self.parent, 'clipped') and self.parent.clipped == True:
-            s += ' style="clip-path: url(#' + str(id(self.parent)) + ');"'
         # End Image SVG tag
         s += ' />'
         # Render Children
         if len(self.children) > 0:
             s += '\n'
-            s += self.render_children(self.position, self.depth, self.children)
+            s += self.render_children()
         return s
