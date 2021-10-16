@@ -1,7 +1,8 @@
-from typing import Union, Optional
-from collections.abc import Iterable
+from typing import Union, Dict, Iterable
 from .Item import Item
 from .util.Vector2 import Vector2
+from .Font import Font
+from .primitives.Shape import Shape
 
 class Canvas(Item):
     """
@@ -25,6 +26,7 @@ class Canvas(Item):
         self.file_name: str = file_name
         self.file_format: str = file_format
         self.canvas_size: Vector2 = size
+        self.defs_map: Dict[str, str] = {}
 
     def render(self) -> str:
         """
@@ -35,8 +37,18 @@ class Canvas(Item):
         if abs(self.rotation) > 1e-6:
              s += f' transform="rotate({self.rotation} {self.canvas_size.x // 2} {self.canvas_size.y // 2})"'
         s += '>\n'
+        # Render global defs
+        for defs in self.defs_map.values():
+            s += defs + '\n'
         # Render children
         for child in self.children:
             s += '\t' + child.render() +'\n'
         # Close svg tag and return string
         return s + '</svg>'
+
+    def add_def(self, other: Union[Font, Shape]):
+        if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape)):
+            if isinstance(other, Font):
+                self.defs_map[other.family] = other.defs()
+            elif isinstance(other, Shape):
+                self.defs_map[id(other)] = other.defs()

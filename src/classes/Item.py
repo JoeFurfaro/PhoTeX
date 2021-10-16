@@ -9,11 +9,23 @@ class Item(object):
         self.depth: int = 0
 
     def add_child(self, other) -> None:
+        # Get root of entire tree -- Should be Canvas
+        root = self.parent
+        while not(hasattr(root, 'defs_map')):
+            if root.parnet == None:
+                break
+            root = root.parent
+        # Add other's defs to root
+        if hasattr(root, 'defs_map'):
+            root.add_def(other)
+        # Add other to children
         self.children.append(other)
+        # Set other's parent to current item
         other.parent = self
-        other.depth = self.depth + 1
-        sub_children = other.children.copy()
-        other.children.clear()
+        other.depth = self.depth + 1 # update depth of other
+        sub_children = other.children.copy() # copy children of other
+        other.children.clear() # delete children of other
+        # Reupdate all children of other using this algorithm
         for sub_child in sub_children:
             other.add_child(sub_child)
 
