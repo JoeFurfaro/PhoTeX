@@ -50,6 +50,10 @@ class Canvas(Item):
         # Close svg tag and return string
         return s + '</svg>'
 
+    def export_svg(self, filepath: str):
+        with open(filepath, 'w') as file:
+            file.write(self.render())
+
     def add_def(self, other: Union[Font, Shape]):
         if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape)):
             if isinstance(other, Font):
