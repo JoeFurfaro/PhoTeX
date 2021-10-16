@@ -38,8 +38,12 @@ class Canvas(Item):
              s += f' transform="rotate({self.rotation} {self.canvas_size.x // 2} {self.canvas_size.y // 2})"'
         s += '>\n'
         # Render global defs
-        for defs in self.defs_map.values():
-            s += defs + '\n'
+        if self.defs_map != {}:
+            s += '\t<defs>\n'
+            for key, value in self.defs_map.items():
+                for line in value.split('\n'):
+                    s += f'\t\t{line}\n'
+            s += '\t</defs>\n'
         # Render children
         for child in self.children:
             s += '\t' + child.render() +'\n'

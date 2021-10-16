@@ -10,12 +10,12 @@ class Item(object):
 
     def add_child(self, other) -> None:
         # Get root of entire tree -- Should be Canvas
-        root = self.parent
+        root = self
         while not(hasattr(root, 'defs_map')):
-            if root.parnet == None:
-                break
             root = root.parent
-        # Add other's defs to root
+            if root.parent == None:
+                break
+        # Add other's defs to root -- incase root isn't canvas, if statement will fail
         if hasattr(root, 'defs_map'):
             root.add_def(other)
         # Add other to children
