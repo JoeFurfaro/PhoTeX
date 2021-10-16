@@ -26,7 +26,7 @@ file_name: ESCAPED_STRING
 
 canvas_definition: "canvas" _INLINE_WHITESPACE file_name _INLINE_WHITESPACE size _item_body
 
-item: rect | circle | ellipse | line | polygon | text | image | custom | _comment
+item: rect | circle | ellipse | line | polygon | text | image | custom
 
 color: identifier | hex_color
 
