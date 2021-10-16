@@ -75,11 +75,7 @@ text: modifier_list "text" _INLINE_WHITESPACE position _INLINE_WHITESPACE font _
 image: modifier_list "image" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression [_INLINE_WHITESPACE expression] _INLINE_WHITESPACE path
 custom: identifier _INLINE_WHITESPACE position [_INLINE_WHITESPACE size]
 
-_COMMENT: /.+/
-_MULTILINE_COMMENT: /.*[^\*\/\n]/
-_inline_comment: "//" _COMMENT _NEWLINE?
-_multiline_comment: "/*" _INLINE_WHITESPACE? _NEWLINE? _MULTILINE_COMMENT _NEWLINE? _INLINE_WHITESPACE? "*/" _NEWLINE?
-_comment: _inline_comment | _multiline_comment
+_comment: _NEWLINE? (_INLINE_COMMENT | _MULTILINE_COMMENT) _NEWLINE?
 
 %import common.CNAME
 %import common.WS_INLINE
@@ -89,3 +85,5 @@ _comment: _inline_comment | _multiline_comment
 %import common.SIGNED_INT
 %import common.NEWLINE
 %import common.HEXDIGIT
+%import common.C_COMMENT -> _MULTILINE_COMMENT
+%import common.CPP_COMMENT -> _INLINE_COMMENT
