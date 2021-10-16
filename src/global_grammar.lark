@@ -87,3 +87,5 @@ _comment: _NEWLINE? (_INLINE_COMMENT | _MULTILINE_COMMENT) _NEWLINE?
 %import common.HEXDIGIT
 %import common.C_COMMENT -> _MULTILINE_COMMENT
 %import common.CPP_COMMENT -> _INLINE_COMMENT
+
+%ignore WS_INLINE
