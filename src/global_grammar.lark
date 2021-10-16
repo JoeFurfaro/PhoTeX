@@ -1,4 +1,4 @@
-start: (font_definition | color_definition | type_definition | canvas_definition | _inline_comment)*
+start: (font_definition | color_definition | type_definition | canvas_definition | _comment)*
 
 identifier: CNAME
 
@@ -6,11 +6,11 @@ _INLINE_WHITESPACE: WS_INLINE
 _WHITESPACE: WS
 _NEWLINE: NEWLINE
 
-color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE? (_inline_comment? | _NEWLINE)
+color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE? (_comment? | _NEWLINE)
 hex_color: HEX_COLOR
 HEX_COLOR: "#" HEXDIGIT HEXDIGIT HEXDIGIT [HEXDIGIT HEXDIGIT HEXDIGIT]
 
-font_definition: "define" _INLINE_WHITESPACE "font" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE font_name _INLINE_WHITESPACE font_size [_INLINE_WHITESPACE font_weight] _INLINE_WHITESPACE? (_inline_comment? | _NEWLINE)
+font_definition: "define" _INLINE_WHITESPACE "font" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE font_name _INLINE_WHITESPACE font_size [_INLINE_WHITESPACE font_weight] _INLINE_WHITESPACE? (_comment? | _NEWLINE)
 font_name: ESCAPED_STRING
 font_size: INT
 FONT_WEIGHT: "thin" | "regular" | "bold"
@@ -26,7 +26,7 @@ file_name: ESCAPED_STRING
 
 canvas_definition: "canvas" _INLINE_WHITESPACE file_name _INLINE_WHITESPACE size _item_body
 
-item: rect | circle | ellipse | line | polygon | text | image | custom | _inline_comment
+item: rect | circle | ellipse | line | polygon | text | image | custom
 
 color: identifier | hex_color
 
@@ -75,9 +75,7 @@ text: modifier_list "text" _INLINE_WHITESPACE position _INLINE_WHITESPACE font _
 image: modifier_list "image" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression [_INLINE_WHITESPACE expression] _INLINE_WHITESPACE path
 custom: identifier _INLINE_WHITESPACE position [_INLINE_WHITESPACE size]
 
-_COMMENT: /.+/
-_inline_comment: "//" _COMMENT _NEWLINE?
-// _multiline_comment: "/*" _INLINE_WHITESPACE? _NEWLINE? (_COMMENT _NEWLINE?)* _INLINE_WHITESPACE? "*/" TODO EXTREMELY FINICKY
+_comment: _NEWLINE? (_INLINE_COMMENT | _MULTILINE_COMMENT) _NEWLINE?
 
 %import common.CNAME
 %import common.WS_INLINE
@@ -87,3 +85,7 @@ _inline_comment: "//" _COMMENT _NEWLINE?
 %import common.SIGNED_INT
 %import common.NEWLINE
 %import common.HEXDIGIT
+%import common.C_COMMENT -> _MULTILINE_COMMENT
+%import common.CPP_COMMENT -> _INLINE_COMMENT
+
+%ignore WS_INLINE

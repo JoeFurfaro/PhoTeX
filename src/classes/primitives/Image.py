@@ -5,7 +5,7 @@ from ..Item import Item
 from ..util.Vector2 import Vector2
 
 
-class Shape(Item):
+class Image(Item):
     def __init__(self,
                  path: str, position: Vector2, size: Vector2,
                  children: Iterable[Item] = [],

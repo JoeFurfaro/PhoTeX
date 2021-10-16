@@ -2,11 +2,13 @@
 import sys
 import requests
 from classes.parser.Definitions import *
+from classes.parser.Generators import *
+
 
 try:
     from lark import Lark, Tree
 except:
-    print("Please run `pip install lark --upgrade` and start the program again")
+    print("Please run `pip install lark Pillow --upgrade` and start the program again")
     exit()
 
 class Parser:
@@ -35,6 +37,7 @@ class Parser:
 
         self.process_color_defs(color_defs)
         self.process_font_defs(font_defs)
+        self.process_type_defs(type_defs)
 
         # TODO semantic checking
 
@@ -69,6 +72,11 @@ class Parser:
                 print(f'Using font {font_name} from: {font_url}')
             
             self.defs.add(FontDef(ID.value, font_name, font_size, font_weight))
+
+    def process_type_defs(self, type_defs):
+        for x in type_defs:
+            pass
+
 
 def main():
     fileToParse = ""
