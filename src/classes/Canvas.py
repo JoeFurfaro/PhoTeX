@@ -3,6 +3,7 @@ from .Item import Item
 from .util.Vector2 import Vector2
 from .Font import Font
 from .primitives.Shape import Shape
+from .primitives.Text import Text
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
 
@@ -78,9 +79,12 @@ class Canvas(Item):
                 print("Cannot export as specified file type.")
 
 
-    def add_def(self, other: Union[Font, Shape]):
-        if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape)):
+    def add_def(self, other: Union[Font, Shape, Text]):
+        if len(other.defs()) > 0 and (isinstance(other, Font) or isinstance(other, Shape) or isinstance(other, Text)):
             if isinstance(other, Font):
                 self.defs_map[other.family] = other.defs()
+            elif isinstance(other, Text):
+                # get font from text and add to defs
+                self.defs_map[other.font.family] = other.font.defs()
             elif isinstance(other, Shape) and other.clipped == True:
                 self.defs_map[id(other)] = other.defs()

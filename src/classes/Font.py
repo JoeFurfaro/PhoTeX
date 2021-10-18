@@ -1,7 +1,7 @@
 from typing import Optional
 
 class Font(object):
-    defs = {
+    defs_map = {
         'Arial': None,
         'Helvetica': None,
         'Times New Roman': None,
@@ -24,6 +24,6 @@ class Font(object):
         return s
 
     def defs(self) -> str:
-        if self.family in Font.defs and self.family[0] != '@':
-            return f'<style type="text/css">\n\t@import url("{Font.defs[self.family]}");</style>'
+        if (self.family in Font.defs_map) and (self.family[0] != '@') and (Font.defs_map[self.family] != None):
+            return f'<style type="text/css">\n\t@import url("{Font.defs_map[self.family]}");\n</style>'
         return ''
