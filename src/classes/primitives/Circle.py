@@ -48,3 +48,9 @@ class Circle(Shape):
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
         return s + ' />\n</clipPath>'
+
+    def get_height(self) -> Union[int, float]:
+        return self.radius * 2
+
+    def get_width(self) -> Union[int, float]:
+        return self.radius * 2

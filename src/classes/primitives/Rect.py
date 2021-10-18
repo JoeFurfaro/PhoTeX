@@ -14,15 +14,15 @@ class Rect(Shape):
     """
     def __init__(self,
             clipped: bool, position: Vector2,
-            width: int, height: int,
+            width: Union[int, float], height: Union[int, float],
             stroke: Optional[Stroke] = None, fill: Optional[Fill] = None,
             children: Iterable[Item] = [], rotation: Union[int, float] = 0
         ):
         super().__init__(clipped, position,
                          stroke=stroke, fill=fill,
                          children=children, rotation=rotation)
-        self.width: int = width
-        self.height: int = height
+        self.width: Union[int, float] = width
+        self.height: Union[int, float] = height
 
     def render(self) -> str:
         rx = self.position.x - (self.width // 2)
@@ -51,3 +51,9 @@ class Rect(Shape):
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
         return s + ' />\n</clipPath>'
+
+    def get_height(self) -> Union[int, float]:
+        return self.height
+
+    def get_width(self) -> Union[int, float]:
+        return self.width
