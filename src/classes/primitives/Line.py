@@ -20,7 +20,7 @@ class Line(Shape):
         self.end: Vector2 = end
 
     def render(self) -> str:
-        s = f'<line x1="{self.start.x}" y1="{self.start.y}" x2="{self.start.x}" y2="{self.start.y}"'
+        s = f'<line x1="{self.start.x}" y1="{self.start.y}" x2="{self.end.x}" y2="{self.end.y}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation} {self.position.x} {self.position.y})"'
