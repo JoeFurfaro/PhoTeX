@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="500">
+	<rect x="-250.0" y="-250.0" width="500.0" height="500.0" />
+	<g transform="translate(0, 0)">
+		<rect x="-250.0" y="-250.0" width="250.0" height="500.0" />
+		<g transform="translate(-125.0, 0)">
+			<rect x="-125.0" y="-250.0" width="250.0" height="500.0" stroke="#000000" stroke-width="2" stroke-opacity="1" fill="#FFFFFF" fill-opacity="1.0" />
+			<g transform="translate(0, 0)">
+				<circle cx="0" cy="0" r="100.0" />
+				<g transform="translate(0, 0)">
+					<text x="0" y="0" text-anchor="middle" alignment-baseline="hanging" font-family="Arial" font-size="11" font-weight="regular" fill="#FFFFFF" fill-opacity="1" transform="rotate(90 0 0)">yang</text>
+				</g>
+			</g>
+		</g>
+		<rect x="0.0" y="-250.0" width="250.0" height="500.0" />
+		<g transform="translate(125.0, 0)">
+			<rect x="-125.0" y="-250.0" width="250.0" height="500.0" stroke="#FFFFFF" stroke-width="2" stroke-opacity="1" fill="#000000" fill-opacity="1.0" />
+			<g transform="translate(0, 0)">
+				<circle cx="0" cy="0" r="100.0" />
+				<g transform="translate(0, 0)">
+					<text x="0" y="0" text-anchor="middle" alignment-baseline="hanging" font-family="Arial" font-size="11" font-weight="regular" fill="#000000" fill-opacity="1" transform="rotate(-90 0 0)">yin</text>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

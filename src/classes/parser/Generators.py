@@ -376,7 +376,7 @@ class TextGenerator(Generator):
 
         f_tree = Generator.find_in_tree(tree, "font")
         fID = f_tree[0].value
-        font = defs.get_font(fID)
+        font = defs.get_font(fID).obj
         if font == None:
             Generator.exception(c_token.line, c_token.column, "Unrecognized font identifier '" + cID + "' in text definition")
 

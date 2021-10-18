@@ -66,7 +66,12 @@ class Parser:
             canvas.generate()
 
             print("Done generating objects for '" + canvas.name + ". Building output...")
-            # TODO: Call SVG code and build output using canvas variable c
+
+            # TODO: Build SVG!
+            c = Canvas(canvas.base, canvas.ext.lower(), Vector2(canvas.width, canvas.height), canvas.children, 0)
+            c.export("test.png")
+
+            print("Built canvas '" + canvas.name + "!")
 
         print("Successfully built " + str(len(self.defs.canvases)) + " canvas(es)! Compilation complete.")
 

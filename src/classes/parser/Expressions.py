@@ -17,14 +17,14 @@ class WidthRatio(Literal):
         return str(self.v) + "w"
 
     def eval(self, pw, ph):
-        return self.v * pw
+        return (self.v / 100) * pw
 
 class HeightRatio(Literal):
     def __str__(self):
         return str(self.v) + "h"
     
     def eval(self, pw, ph):
-        return self.v * ph
+        return (self.v / 100) * ph
 
 class BinaryOperator:
     def __init__(self, A, B):
