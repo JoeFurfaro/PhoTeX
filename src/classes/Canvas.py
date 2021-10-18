@@ -24,12 +24,12 @@ class Canvas(Item):
             rotation: Union[int, float] = 0
         ):
         super().__init__(rotation)
-        for child in children:
-            self.add_child(child)
         self.file_name: str = file_name
         self.file_format: str = file_format
         self.canvas_size: Vector2 = size
         self.defs_map: Dict[str, str] = {}
+        for child in children:
+            self.add_child(child)
 
     def render(self) -> str:
         """
@@ -63,20 +63,17 @@ class Canvas(Item):
     def export(self):
         svg_file: str = self.file_name + '.svg'
         export_file: str = self.file_name + '.' + self.file_format
-
         # An svg file will always be exported first
         with open(svg_file, 'w') as fh:
             fh.write(self.render())
-
         # Export the svg to whatever file type they specified
         if self.file_format != "svg":
             image = svg2rlg(svg_file)
             try:
                 renderPM.drawToFile(image, export_file, fmt=self.file_format)
-                print("Successfully exported as",
-                      self.file_format.upper() + ".")
-            except:
-                print("Cannot export as specified file type.")
+                # print("Successfully exported as", self.file_format.upper() + ".")
+            except Exception as e:
+                print("Cannot export as specified file type.", e)
 
 
     def add_def(self, other: Union[Font, Shape, Text]):
