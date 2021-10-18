@@ -4,6 +4,7 @@ import os
 import requests
 from classes.parser.Definitions import *
 from classes.parser.Generators import *
+from classes.parser.Expressions import *
 
 
 try:
@@ -121,8 +122,7 @@ class Parser:
             children_generators = Generator.from_item_list(Generator.find_in_tree(x, "item_list"), self.defs)
             if self.defs.has_type(ID.value):
                 Generator.exception(ID.line, ID.column, ": Type identifier '" + ID.value + "' is already in use")
-
-            self.defs.add(TypeDef(ID.value, width, height, children_generators))
+            self.defs.add(TypeDef(ID.value, Integer(int(width)), Integer(int(height)), children_generators))
 
 def main():
     fileToParse = ""
