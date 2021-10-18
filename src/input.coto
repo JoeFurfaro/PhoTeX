@@ -5,7 +5,7 @@ define font roboto "Arial" 11 regular
 
 define leftRect {
     outlined black 2 rect 0 0 100w 100h white {
-        circle 0 0 40w black {
+        circle 0 0 20w black {
             rotated 90 text 0 0 roboto white "yang"
         }
     }
@@ -13,7 +13,7 @@ define leftRect {
 
 define rightRect {
     outlined white 2 rect 0 0 100w 100h black {
-        circle 0 0 40w white {
+        circle 0 0 20w white {
             rotated -90 text 0 0 roboto black "yin"
         }
     }

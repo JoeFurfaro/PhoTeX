@@ -94,5 +94,5 @@ class DefLookup:
         return None
 
     # Check if a canvas with a given file name exists
-    def has_canvas(self, file):
-        return any([x.file == file for x in self.canvases])
+    def has_canvas(self, name):
+        return any([x.name == name for x in self.canvases])

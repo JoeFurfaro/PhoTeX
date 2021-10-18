@@ -208,6 +208,7 @@ class CircleGenerator(Generator):
                     Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + cID + "' in fill color")
             elif color_type == "hex_color":
                 fill_color = str(c_token.value)
+            fill = Fill(fill_color, 1.0)
 
         for modifier in tree.children[0].children:
             M = modifier.children[0]

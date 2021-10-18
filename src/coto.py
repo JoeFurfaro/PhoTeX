@@ -62,14 +62,14 @@ class Parser:
             self.defs.add(CanvasDef(base, ext.lower(), width, height, children_generators))
 
         for canvas in self.defs.canvases:
-            print("Generating objects for canvas '" + canvas.name + "'...")
+            print("Generators constructed. Generating objects for canvas '" + canvas.name + "'...")
             canvas.generate()
 
-            print("Done generating objects for '" + canvas.name + ". Building output...")
+            print("Done generating objects for '" + canvas.name + "'. Building output...")
 
             # TODO: Build SVG!
             c = Canvas(canvas.base, canvas.ext.lower(), Vector2(canvas.width, canvas.height), canvas.children, 0)
-            c.export("test.png")
+            c.export()
 
             print("Built canvas '" + canvas.name + "!")
 
