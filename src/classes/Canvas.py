@@ -53,28 +53,21 @@ class Canvas(Item):
         # Close svg tag and return string
         return s + '</svg>'
 
-    def export(self, filepath: str):
-        file = filepath.split('.')
-        # If no file extension is specified, assume svg
-        if len(file) == 1:
-            file.append("svg")
-        ext = file[len(file) - 1]
-        basepath = ".".join(file[:len(file)-1])
-        svg_file = basepath + ".svg"
-        print(svg_file)
+    def export(self):
+        svg_file: str = self.file_name + '.svg'
+        export_file: str = self.file_name + '.' + self.file_format
 
         # An svg file will always be exported first
-        with open(svg_file, 'w') as file:
-            file.write(self.render())
+        with open(svg_file, 'w') as fh:
+            fh.write(self.render())
 
         # Export the svg to whatever file type they specified
-        if ext != "svg":
-            out_file = basepath + "." + ext
-            # print(out_file)
+        if self.file_format != "svg":
             image = svg2rlg(svg_file)
             try:
-                renderPM.drawToFile(image, out_file, fmt=ext)
-                print("Successfully exported as", ext.upper() + ".")
+                renderPM.drawToFile(image, export_file, fmt=self.file_format)
+                print("Successfully exported as",
+                      self.file_format.upper() + ".")
             except:
                 print("Cannot export as specified file type.")
 

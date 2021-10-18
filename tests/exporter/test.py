@@ -15,7 +15,7 @@ from classes.util.Vector2 import Vector2
 |-------|-------|
 """
 
-c = Canvas("test", "svg", Vector2(500, 500), children=[], rotation=0)
+c = Canvas("test", "png", Vector2(500, 500), children=[], rotation=0)
 rect1 = Rect(True, Vector2(125, 250), 250, 500, stroke=Stroke('black', 5, 1), fill=Fill("white", 1), children=[], rotation=0)
 rect2 = Rect(False, Vector2(375, 250), 250, 500, stroke=Stroke('white', 5, 1), fill=Fill("black", 1), children=[], rotation=0)
 circle1 = Circle(False, Vector2(0, 0), 50, stroke=None, fill=Fill("black", 1), children=[], rotation=0)
@@ -31,4 +31,4 @@ circle1.add_child(text1)
 circle2.add_child(text2)
 
 print(c.render())
-c.export("test.png")
+c.export()
