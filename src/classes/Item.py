@@ -11,7 +11,7 @@ class Item(object):
     def add_child(self, other) -> None:
         # Get root of entire tree -- Should be Canvas
         root = self
-        while not(hasattr(root, 'defs_map')):
+        while not(hasattr(root, 'defs_map')) and hasattr(root, 'parent') and root.parent != None:
             root = root.parent
             if root.parent == None:
                 break
