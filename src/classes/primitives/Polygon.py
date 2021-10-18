@@ -72,3 +72,13 @@ class Polygon(Shape):
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
         return s + ' />\n</clipPath>'
+
+    def get_height(self) -> Union[int, float]:
+        M = max(self.points, key=lambda p: p.y)
+        m = min(self.points, key=lambda p: p.y)
+        return M.y - m.y
+
+    def get_width(self) -> Union[int, float]:
+        M = max(self.points, key=lambda p: p.x)
+        m = min(self.points, key=lambda p: p.x)
+        return M.x - m.x

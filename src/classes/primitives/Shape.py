@@ -24,3 +24,9 @@ class Shape(Item):
 
     def defs(self) -> str:
         return f'<clipPath id="{id(self)}" clipPathUnits="userSpaceOnUse">\n\t'
+
+    def get_height(self) -> Union[int, float]:
+        raise NotImplementedError
+
+    def get_width(self) -> Union[int, float]:
+        raise NotImplementedError

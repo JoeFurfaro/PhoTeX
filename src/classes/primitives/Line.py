@@ -42,3 +42,9 @@ class Line(Shape):
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
         return s + ' />\n</clipPath>'
+
+    def get_height(self) -> Union[int, float]:
+        return max(self.start.y, self.end.y) - min(self.start.y, self.end.y)
+
+    def get_width(self) -> Union[int, float]:
+        return max(self.start.x, self.end.x) - min(self.start.x, self.end.x)

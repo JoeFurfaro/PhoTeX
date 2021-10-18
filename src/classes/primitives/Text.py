@@ -85,3 +85,9 @@ class Text(Item):
             s += f' transform="rotate({self.rotation})"'
         s += f'>{self.text}</text>\n</clipPath>'
         return s
+
+    def get_height(self) -> Union[int, float]:
+        raise NotImplementedError
+
+    def get_width(self) -> Union[int, float]:
+        return self.width if self.width != None else len(self.text)

@@ -31,3 +31,9 @@ class Image(Item):
             s += '\n'
             s += self.render_children()
         return s
+
+    def get_height(self) -> Union[int, float]:
+        return self.size.y
+
+    def get_width(self) -> Union[int, float]:
+        return self.size.x
