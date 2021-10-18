@@ -377,9 +377,9 @@ class TextGenerator(Generator):
 
         f_tree = Generator.find_in_tree(tree, "font")
         fID = f_tree[0].value
-        font = defs.get_font(fID).obj
+        font = defs.get_font(fID)
         if font == None:
-            Generator.exception(c_token.line, c_token.column, "Unrecognized font identifier '" + cID + "' in text definition")
+            Generator.exception(c_token.line, c_token.column, "Unrecognized font identifier '" + fID + "' in text definition")
 
         content_tree = Generator.find_in_tree(tree, "content")
         text = content_tree[0].value[1:-1]
@@ -400,4 +400,4 @@ class TextGenerator(Generator):
                 elif Mname == "right":
                     align = "right"
 
-        return TextGenerator(x, y, text, font, color, align, width_expr, rotate)
+        return TextGenerator(x, y, text, font.obj, color, align, width_expr, rotate)
