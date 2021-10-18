@@ -1,2 +1,29 @@
-define color red #FF0000
-define color blue #0000FF
+define color black #000000
+define color white #FFFFFF
+
+define font roboto "Arial" 11 regular
+
+define leftRect {
+    outlined black 2 rect 0 0 100w 100h white {
+        circle 0 0 40w black {
+            rotated 90 text 0 0 roboto white "yang"
+        }
+    }
+}
+
+define rightRect {
+    outlined white 2 rect 0 0 100w 100h black {
+        circle 0 0 40w white {
+            rotated -90 text 0 0 roboto black "yin"
+        }
+    }
+}
+
+define exampleDesign {
+    leftRect -25w 0 50w 100h
+    rightRect 25w 0 50w 100h
+}
+
+canvas "Example.png" 500 500 {
+    exampleDesign 0 0 100w 100h
+}

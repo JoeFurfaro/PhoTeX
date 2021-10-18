@@ -9,16 +9,19 @@ class Integer(Literal):
     def __str__(self):
         return str(self.v)
 
+    def eval(self, pw, ph):
+        return int(self.v)
+
 class WidthRatio(Literal):
     def __str__(self):
-        return str(self.v + "w")
+        return str(self.v) + "w"
 
     def eval(self, pw, ph):
         return self.v * pw
 
 class HeightRatio(Literal):
     def __str__(self):
-        return str(self.v + "h")
+        return str(self.v) + "h"
     
     def eval(self, pw, ph):
         return self.v * ph
@@ -30,6 +33,16 @@ class BinaryOperator:
 
     def eval(self, pw, ph):
         pass
+
+class UnaryMinus:
+    def __init__(self, A):
+        self.A = A
+
+    def __str__(self):
+        return "(- " + str(self.A) + ")"
+
+    def eval(self, pw, ph):
+        return self.A.eval(pw, ph) * -1
 
 class Addition(BinaryOperator):
     def __str__(self):
@@ -54,11 +67,40 @@ class Multiplication(BinaryOperator):
 
 class Division(BinaryOperator):
     def __str__(self):
-        return "(" + str(self.A) + " + " + str(self.B) + ")"
+        return "(" + str(self.A) + " / " + str(self.B) + ")"
 
     def eval(self, pw, ph):
-        return self.A.eval(pw, ph) + self.B.eval(pw, ph)
+        return int(self.A.eval(pw, ph) / self.B.eval(pw, ph))
 
 def expression_from_tree(tree):
-    # TODO: Make this parse expressions from syntax trees
-    return Integer(0) # And update this!
+    return expression_from_subtree(tree.children[0])
+
+def expression_from_subtree(tree):
+    T = tree.data
+    if T == "value":
+        v = tree.children[0]
+        value = int(v.value)
+        if len(tree.children) == 1:
+            return Integer(value)
+        else:
+            unit = tree.children[1].children[0].value
+            if unit == "h":
+                return HeightRatio(value)
+            elif unit == "w":
+                return WidthRatio(value)
+    elif T == "add":
+        return Addition(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
+    elif T == "sub":
+        return Subtraction(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
+    elif T == "mul":
+        return Multiplication(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
+    elif T == "div":
+        return Division(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
+    elif T == "neg":
+        return UnaryMinus(expression_from_subtree(tree.children[0]))
+
+def find_in_tree(tree, key):
+    for x in tree.children:
+        if x.data == key:
+            return x.children
+    return None
