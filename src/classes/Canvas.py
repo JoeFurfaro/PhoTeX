@@ -53,6 +53,13 @@ class Canvas(Item):
         # Close svg tag and return string
         return s + '</svg>'
 
+    def add_child(self, other) -> None:
+        if hasattr(other, 'position'):
+            # Shift position of immediate children
+            other.position.x += self.canvas_size.x // 2
+            other.position.y += self.canvas_size.y // 2
+        return super().add_child(other)
+
     def export(self):
         svg_file: str = self.file_name + '.svg'
         export_file: str = self.file_name + '.' + self.file_format
