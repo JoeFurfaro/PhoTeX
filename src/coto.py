@@ -9,7 +9,7 @@ from classes.parser.Generators import *
 try:
     from lark import Lark, Tree
 except:
-    print("Please run `pip install lark Pillow --upgrade` and start the program again")
+    print("Please run `pip install lark Pillow svglib --upgrade` and start the program again")
     exit()
 
 class Parser:
