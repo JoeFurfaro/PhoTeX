@@ -8,6 +8,8 @@ from classes.parser.Generators import *
 
 try:
     from lark import Lark, Tree
+    import PIL
+    from svglib.svglib import svg2rlg
 except:
     print("Please run `pip install lark Pillow svglib --upgrade` and start the program again")
     exit()
