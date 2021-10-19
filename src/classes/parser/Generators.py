@@ -1,3 +1,4 @@
+from os import stat
 from ..primitives.Rect import Rect
 from ..primitives.Circle import Circle
 from ..primitives.Ellipse import Ellipse
@@ -170,7 +171,6 @@ class Generator:
                     stroke_color = None
                     c_token = M.children[0].children[0].children[0]
                     if color_type == "identifier":
-                        c_token = M.children[0].children[0].children[0]
                         cID = c_token
                         stroke_color = defs.get_color(cID)
                         if stroke_color == None:
@@ -180,6 +180,25 @@ class Generator:
                     thickness = int(M.children[1].children[0].value)
                     return Stroke(stroke_color, thickness, opacity=1)
         return None
+
+    @staticmethod
+    def stroke_from_tree(tree, defs):
+        data = [x.data for x in tree.children]
+        thickness = 1
+        color = "#000000"
+        if "thickness" in data:
+            thick_tree = Generator.find_in_tree(tree, "thickness")
+            thickness = int(thick_tree[0].value)
+        if "color" in data:
+            color_tree = Generator.find_in_tree(tree, "color")[0]
+            c_token = color_tree.children[0]
+            if color_tree.data == "identifier":
+                color = defs.get_color(c_token.value)
+                if color == None:
+                    Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + c_token.value + "' in outline color")
+            elif color_tree.data == "hex_color":
+                color = str(c_token.value)
+        return Stroke(color, thickness, 1.0)
 
     @staticmethod
     def align_from_tree_modifier(tree, defs):
@@ -329,8 +348,15 @@ class LineGenerator(Generator):
         return Line(False, pos1, pos2, self.stroke, [], 0)
 
     @staticmethod
-    def from_parse_tree(tree):
-        return None
+    def from_parse_tree(tree, defs):
+        x1 = expression_from_tree(tree.children[0].children[0])
+        y1 = expression_from_tree(tree.children[0].children[1])
+        x2 = expression_from_tree(tree.children[1].children[0])
+        y2 = expression_from_tree(tree.children[1].children[1])
+        
+        stroke = Generator.stroke_from_tree(tree, defs)
+
+        return LineGenerator(x1, y1, x2, y2, stroke)
         
 class PolygonGenerator(Generator):
     def __init__(self, points, fill=None, stroke=None, rotate=0, clipped=False, children=[]):
@@ -374,8 +400,24 @@ class ImageGenerator(Generator):
         return Image(self.path, pos, size, [], self.rotate)
 
     @staticmethod
-    def from_parse_tree(tree):
-        return None
+    def from_parse_tree(tree, defs):
+        pos = Generator.find_in_tree(tree, "position")
+        x = expression_from_tree(pos[0])
+        y = expression_from_tree(pos[1])
+        width = expression_from_tree(tree.children[2])
+
+        height = None
+        if len(tree.children) > 4:
+            height = expression_from_tree(tree.children[3])
+
+        path_tree = Generator.find_in_tree(tree, "path")
+        path = path_tree[0].value[1:-1]
+
+        Generator.validate_modifiers(tree, ("rotated"))
+        
+        rotate = Generator.rotate_from_tree_modifier(tree, defs)
+
+        return ImageGenerator(x, y, width, height, path, rotate)
 
 class TextGenerator(Generator):
     def __init__(self, x, y, text, font, color, align="center", width_expr=None, rotate=0):
