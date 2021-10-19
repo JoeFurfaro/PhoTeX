@@ -6,6 +6,7 @@ from .primitives.Shape import Shape
 from .primitives.Text import Text
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
+from cairosvg import svg2png
 
 class Canvas(Item):
     """
@@ -68,12 +69,7 @@ class Canvas(Item):
             fh.write(self.render())
         # Export the svg to whatever file type they specified
         if self.file_format != "svg":
-            image = svg2rlg(svg_file)
-            try:
-                renderPM.drawToFile(image, export_file, fmt=self.file_format)
-                # print("Successfully exported as", self.file_format.upper() + ".")
-            except Exception as e:
-                print("Cannot export as specified file type.", e)
+            svg2png(bytestring=self.render(),write_to=self.file_name + ".png")
 
 
     def add_def(self, other: Union[Font, Shape, Text]):
