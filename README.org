@@ -12,7 +12,7 @@ A custom language meant for tech savvy graphic designers who need to design stan
 The designer would type out in a plaintext language the commands to create the vector graphics. These commands would then be compiled down to objects in the language and then formated into an SVG file format.
 
 * Inspiration
-here does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all the tools that we have seen are visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in Adobe Photoshop, you need to manually copy and paste files and manually make minor modifications to each new file if you want to make a series of similar graphics, such as for an advertising campaign where a new graphic is released daily.
+There does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all the tools that we have seen are visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in Adobe Photoshop, you need to manually copy and paste files and manually make minor modifications to each new file if you want to make a series of similar graphics, such as for an advertising campaign where a new graphic is released daily.
 
 We were inspired by tools such as LaTeX, Graphviz, Markdown and ORG. Our goal is to build a similar style tool, but with a lower learning curve. It will be purpose built to create highly customizable graphics that export to any format. Moreover, we want to build a system that will allow automating some aspects of graphic design that Photoshop and other visual tools cannot.
 
