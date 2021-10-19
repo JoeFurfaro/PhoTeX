@@ -32,6 +32,9 @@ class Image(Item):
             s += self.render_children()
         return s
 
+    def defs(self) -> str:
+        return ''
+
     def get_height(self) -> Union[int, float]:
         return self.size.y
 
