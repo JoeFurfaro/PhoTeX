@@ -10,3 +10,14 @@
 A custom language meant for tech savvy graphic designers who need to design standardized vector graphics for their projects. This would be a langauge similar in functionality to LaTeX with the purpose of compiling to a vector format file like an SVG.
 
 The designer would type out in a plaintext language the commands to create the vector graphics. These commands would then be compiled down to objects in the language and then formated into an SVG file format.
+
+* Inspiration
+here does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all the tools that we have seen are visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in Adobe Photoshop, you need to manually copy and paste files and manually make minor modifications to each new file if you want to make a series of similar graphics, such as for an advertising campaign where a new graphic is released daily.
+
+We were inspired by tools such as LaTeX, Graphviz, Markdown and ORG. Our goal is to build a similar style tool, but with a lower learning curve. It will be purpose built to create highly customizable graphics that export to any format. Moreover, we want to build a system that will allow automating some aspects of graphic design that Photoshop and other visual tools cannot.
+
+* How does it work
+We decided to break the problem into two parts, the parser and the exporter. The parser will read in the file, convert it to a parse tree and check the semantics to offer useful information to the user if there is an error in their code. If the parser doesn't find any semantic or syntax errors it will pass the parse tree to the exporter. The exporter will convert the parse tree into a set of hierarchically grouped primitive objects which can then be easily be converted to svg format. Lastly, the exporter will convert the resulting svg into the final file output type (png, jpg, svg, etc).
+
+As we are limited in time, we will use the Lark (https://github.com/lark-parser/lark) python open source python library to help build the parse trees. Lark can accept an EBNF style grammar and an input string and return a parse tree. Therefore we will only need to write the grammar and the semantic checking! To help save time in the exporting we will use SVGLib (https://github.com/deeplook/svglib) which is another python library to build svg files.
+
