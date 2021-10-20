@@ -74,7 +74,7 @@ class Parser:
             c = Canvas(canvas.base, canvas.ext.lower(), Vector2(canvas.width, canvas.height), canvas.children, 0)
             c.export()
 
-            print("Built canvas '" + canvas.name + "!")
+            print("Built canvas '" + canvas.name + "'!")
 
         print("Successfully built " + str(len(self.defs.canvases)) + " canvas(es)! Compilation complete.")
 

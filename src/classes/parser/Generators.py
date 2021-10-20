@@ -124,8 +124,9 @@ class Generator:
                 color = defs.get_color(cID)
                 if color == None:
                     Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + cID + "' in text color")
+                return color
             elif color_type == "hex_color":
-                color = str(c_token.value)
+                return str(c_token.value)
         return None
 
     @staticmethod
@@ -465,6 +466,7 @@ class TextGenerator(Generator):
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         color = Generator.color_from_tree(tree, defs)
+        print(tree)
         font = Generator.font_from_tree(tree, defs)
 
         width_expr = None
