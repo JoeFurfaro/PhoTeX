@@ -218,7 +218,7 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if Mname not in allowed_modifiers:
-                Generator.exception(M.line, M.column, "Illegal modifier '" + Mname + "' supplied in rect definition")
+                Generator.exception(M.line, M.column, "Illegal modifier '" + Mname + "' supplied in definition")
 
     @staticmethod
     def exception(line, col, msg):
@@ -371,12 +371,26 @@ class PolygonGenerator(Generator):
         points = [Vector2(P[0].eval(pw, ph), P[1].eval(pw, ph)) for P in self.points]
         xs = [p.x for p in points]
         ys = [p.y for p in points]
-        children = self.generate_children(abs(min(xs)-max(xs)), abs(min(ys), max(ys)))
+        children = self.generate_children(abs(min(xs)-max(xs)), abs(min(ys)-max(ys)))
         return Polygon(self.clipped, points, self.stroke, self.fill, children, self.rotate)
 
     @staticmethod
-    def from_parse_tree(tree):
-        return None
+    def from_parse_tree(tree, defs):
+        points = []
+        for T in tree.children:
+            if T.data == "position":
+                points.append((expression_from_tree(T.children[0]), expression_from_tree(T.children[1])))
+
+        children = Generator.children_from_tree(tree, defs)
+        fill = Generator.fill_from_tree(tree, defs)
+
+        Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
+        
+        rotate = Generator.rotate_from_tree_modifier(tree, defs)
+        clipped = Generator.clipped_from_tree_modifier(tree, defs)
+        stroke = Generator.outline_from_tree_modifier(tree, defs)
+
+        return PolygonGenerator(points, fill, stroke, rotate, clipped, children)
 
 class ImageGenerator(Generator):
     def __init__(self, x, y, width_expr, height_expr=None, path="", rotate=0):
