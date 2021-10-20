@@ -1,14 +1,14 @@
-start: (font_definition | color_definition | type_definition | canvas_definition | _comment)*
+start: (font_definition | color_definition | type_definition | canvas_definition)*
 
 identifier: CNAME
 
 _INLINE_WHITESPACE: WS_INLINE
 
-color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE? (_comment? | _NEWLINE)
+color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE?
 hex_color: HEX_COLOR
 HEX_COLOR: "#" HEXDIGIT HEXDIGIT HEXDIGIT [HEXDIGIT HEXDIGIT HEXDIGIT]
 
-font_definition: "define" _INLINE_WHITESPACE "font" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE font_name _INLINE_WHITESPACE font_size [_INLINE_WHITESPACE font_weight] _INLINE_WHITESPACE? (_comment? | _NEWLINE)
+font_definition: "define" _INLINE_WHITESPACE "font" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE font_name _INLINE_WHITESPACE font_size [_INLINE_WHITESPACE font_weight] _INLINE_WHITESPACE?
 font_name: ESCAPED_STRING
 font_size: INT
 FONT_WEIGHT: "thin" | "regular" | "bold"
@@ -17,7 +17,7 @@ font_weight: FONT_WEIGHT
 type_definition: "define" _INLINE_WHITESPACE identifier [_INLINE_WHITESPACE int_width _INLINE_WHITESPACE int_height] _item_body
 int_width: INT
 int_height: INT
-_item_body: _INLINE_WHITESPACE? "{" _WHITESPACE? item_list _WHITESPACE? "}" _NEWLINE? _WHITESPACE?
+_item_body: _INLINE_WHITESPACE? "{" _WHITESPACE? item_list _WHITESPACE? "}"
 item_list: (item _NEWLINE _WHITESPACE?)* [item _WHITESPACE?]
 
 file_name: ESCAPED_STRING
@@ -73,17 +73,19 @@ text: modifier_list "text" _INLINE_WHITESPACE position _INLINE_WHITESPACE font _
 image: modifier_list "image" _INLINE_WHITESPACE position _INLINE_WHITESPACE expression [_INLINE_WHITESPACE expression] _INLINE_WHITESPACE path
 custom: identifier _INLINE_WHITESPACE position [_INLINE_WHITESPACE size]
 
-_comment: _NEWLINE? (_INLINE_COMMENT | _MULTILINE_COMMENT) _NEWLINE?
-
 %import common.CNAME
 %import common.WS_INLINE
 %import common.ESCAPED_STRING
 %import common.INT
 %import common.SIGNED_INT
 %import common.HEXDIGIT
+%import common.C_COMMENT -> _INLINE_COMMENT
+%import common.CPP_COMMENT -> _MULTILINE_COMMENT
 %import common.WS -> _WHITESPACE
 %import common.NEWLINE -> _NEWLINE
-%import common.C_COMMENT -> _MULTILINE_COMMENT
-%import common.CPP_COMMENT -> _INLINE_COMMENT
 
+// allows comments, whitespace and newlines to be put litterally anywhere
 %ignore WS_INLINE
+%ignore _INLINE_COMMENT
+%ignore _MULTILINE_COMMENT
+%ignore _NEWLINE
