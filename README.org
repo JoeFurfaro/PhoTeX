@@ -7,17 +7,17 @@
 
 * Idea
 
-A custom language meant for tech savvy graphic designers who need to design standardized vector graphics for their projects. This would be a langauge similar in functionality to LaTeX with the purpose of compiling to a vector format file like an SVG.
+A programming language that allows tech savvy graphic designers develop scalable vector graphics using plain text code. The designer can create a canvas and declare various elements that are to be rendered on that canvas. They can also define and name custom fonts, colors, and complex objects that can be reused in their project.
 
-The designer would type out in a plaintext language the commands to create the vector graphics. These commands would then be compiled down to objects in the language and then formated into an SVG file format.
+A video we made about the project containing more information and a coding tutorial: https://www.youtube.com/watch?v=-G7Mk0YNnjw
 
+The designers code (stored in a `.ptex` file) is interpretted by PhoTeX and an SVG representation of their design is generated. The resulting image can be outputted in many common image file formats.
 * Inspiration
-There does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all the tools that we have seen are visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in Adobe Photoshop, you need to manually copy and paste files and manually make minor modifications to each new file if you want to make a series of similar graphics, such as for an advertising campaign where a new graphic is released daily.
+There does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all existing tools are GUI-based visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in GUI-based tools like Photoshop and Illustrator, it can be a lot of work to bring in assets you have created for other projects that you wish to name, reuse, and customize.
 
-We were inspired by tools such as LaTeX, Graphviz, Markdown and ORG. Our goal is to build a similar style tool, but with a lower learning curve. It will be purpose built to create highly customizable graphics that export to any format. Moreover, we want to build a system that will allow automating some aspects of graphic design that Photoshop and other visual tools cannot.
+We were inspired by visualization and formatting tools such as LaTeX, Graphviz, Markdown and ORG. Our goal is to build a similar style tool, but with less steep of a learning curve. It will be purpose built to create highly customizable graphics that export to any format. Moreover, we want to build a system that automates some aspects of graphic design that Photoshop and other visual tools cannot.
 
-* How does it work
-We decided to break the problem into two parts, the parser and the exporter. The parser will read in the file, convert it to a parse tree and check the semantics to offer useful information to the user if there is an error in their code. If the parser doesn't find any semantic or syntax errors it will pass the parse tree to the exporter. The exporter will convert the parse tree into a set of hierarchically grouped primitive objects which can then be easily be converted to svg format. Lastly, the exporter will convert the resulting svg into the final file output type (png, jpg, svg, etc).
+* How It Works
+We decided to break the problem into two parts, the parser and the exporter. The parser will read in the plain text `.ptex` file into an abstract syntax tree and check the semantics of the user's program. This approach will allow us to deliver the user meaninful error messages in the cases of synactic and semantic errors. If the parser doesn't find any semantic or syntax errors it will pass a compiled hierarchy of graphical elements (shapes, images, text, etc.) to the exporter. The exporter will convert the parse tree into a set of hierarchically grouped primitive objects which can then be easily be converted to SVG format. Lastly, the exporter will convert the resulting svg into the final file output type (`.png`, `.jpg`, `.svg`, etc).
 
-As we are limited in time, we will use the Lark (https://github.com/lark-parser/lark) python open source python library to help build the parse trees. Lark can accept an EBNF style grammar and an input string and return a parse tree. Therefore we will only need to write the grammar and the semantic checking! To help save time in the exporting we will use SVGLib (https://github.com/deeplook/svglib) which is another python library to build svg files.
-
+We are currently using the Lark parser (https://github.com/lark-parser/lark). Lark is an open-source python library that enables us to build our abstract syntax trees based on an EBNF-like context-free grammar. To assist in building and exporting SVG files, we are using SVGLib (https://github.com/deeplook/svglib).
