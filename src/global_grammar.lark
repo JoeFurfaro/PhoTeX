@@ -3,8 +3,6 @@ start: (font_definition | color_definition | type_definition | canvas_definition
 identifier: CNAME
 
 _INLINE_WHITESPACE: WS_INLINE
-_WHITESPACE: WS
-_NEWLINE: NEWLINE
 
 color_definition: "define" _INLINE_WHITESPACE "color" _INLINE_WHITESPACE identifier _INLINE_WHITESPACE hex_color _INLINE_WHITESPACE? (_comment? | _NEWLINE)
 hex_color: HEX_COLOR
@@ -79,12 +77,12 @@ _comment: _NEWLINE? (_INLINE_COMMENT | _MULTILINE_COMMENT) _NEWLINE?
 
 %import common.CNAME
 %import common.WS_INLINE
-%import common.WS
 %import common.ESCAPED_STRING
 %import common.INT
 %import common.SIGNED_INT
-%import common.NEWLINE
 %import common.HEXDIGIT
+%import common.WS -> _WHITESPACE
+%import common.NEWLINE -> _NEWLINE
 %import common.C_COMMENT -> _MULTILINE_COMMENT
 %import common.CPP_COMMENT -> _INLINE_COMMENT
 
