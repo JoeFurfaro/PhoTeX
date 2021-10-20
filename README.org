@@ -11,7 +11,7 @@ A programming language that allows tech savvy graphic designers develop scalable
 
 A video we made about the project containing more information and a coding tutorial: https://www.youtube.com/watch?v=-G7Mk0YNnjw
 
-The designers code (stored in a ~.ptex~ file) is interpretted by PhoTeX and an SVG representation of their design is generated. The resulting image can be outputted in many common image file formats.
+The designer's code (stored in a ~.ptex~ file) is interpretted by PhoTeX and an SVG representation of their design is generated. The resulting image can be outputted in many common image file formats.
 * Inspiration
 There does not exist a good universal text-based tool for creating general purpose vector and raster graphics. Almost all existing tools are GUI-based visual editors and thus have several limitations that could be overcome by using a WYSIWYM approach. For example, in GUI-based tools like Photoshop and Illustrator, it can be a lot of work to bring in assets you have created for other projects that you wish to name, reuse, and customize.
 
@@ -21,3 +21,13 @@ We were inspired by visualization and formatting tools such as LaTeX, Graphviz, 
 We decided to break the problem into two parts, the parser and the exporter. The parser will read in the plain text `.ptex` file into an abstract syntax tree and check the semantics of the user's program. This approach will allow us to deliver the user meaninful error messages in the cases of synactic and semantic errors. If the parser doesn't find any semantic or syntax errors it will pass a compiled hierarchy of graphical elements (shapes, images, text, etc.) to the exporter. The exporter will convert the parse tree into a set of hierarchically grouped primitive objects which can then be easily be converted to SVG format. Lastly, the exporter will convert the resulting svg into the final file output type (~.png~, ~.jpg~, ~.svg~, etc).
 
 We are currently using the Lark parser (https://github.com/lark-parser/lark). Lark is an open-source python library that enables us to build our abstract syntax trees based on an EBNF-like context-free grammar. To assist in building and exporting SVG files, we are using SVGLib (https://github.com/deeplook/svglib).
+
+* Installation
+Dependencies:
+    - Python 3.x.x
+    - PIP Packages
+        + Lark (https://github.com/lark-parser/lark)
+        + Pillow (https://python-pillow.org/)
+        + SVGLib (https://github.com/deeplook/svglib)
+        + requests (https://docs.python-requests.org/en/latest/)
+        + cairosvg (https://cairosvg.org/)
