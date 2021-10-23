@@ -11,6 +11,7 @@ try:
     from lark import Lark, Tree
     import PIL
     from svglib.svglib import svg2rlg
+    from cairosvg import svg2png
 except:
     print("Please run `pip install lark Pillow svglib --upgrade` and start the program again")
     exit()
