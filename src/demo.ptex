@@ -1,5 +1,25 @@
-coding environment for the example?
+define color black #000000
+define color white #FFFFFF
 
-I kinda like that better.
+define font arial "Arial" 12 regular
 
-:)
+define leftRect {
+    outlined black 2 rect 0 0 100w 100h white {
+        circle 0 0 20w #FF0000 {
+            rotated 90 text 0 0 arial white "yang"
+        }
+    }
+}
+
+define rightRect {
+    outlined white 2 rect 0 0 100w 100h black {
+        circle 0 0 20w #FFFFFF {
+            rotated -90 text 0 0 arial black "yin"
+        }
+    }
+}
+
+canvas "DemoOutput.png" 500 500 {
+    leftRect -25w 0 50w 100h
+    rightRect 25w 0 50w 100h
+}
