@@ -19,8 +19,10 @@ class Image(Item):
         self.size: Vector2 = size
 
     def render(self) -> str:
+        rx = self.position.x - (self.size.x // 2)
+        ry = self.position.y - (self.size.y // 2)
         # Begin Image SVG tag
-        s = f'<image x="{self.position.x}" y="{self.position.y}" width="{self.size.x}" height="{self.size.y}" href="{self.path}"'
+        s = f'<image x="{rx}" y="{ry}" width="{self.size.x}" height="{self.size.y}" href="{self.path}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation} {self.position.x} {self.position.y})"'
