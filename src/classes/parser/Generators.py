@@ -466,7 +466,6 @@ class TextGenerator(Generator):
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         color = Generator.color_from_tree(tree, defs)
-        print(tree)
         font = Generator.font_from_tree(tree, defs)
 
         width_expr = None
