@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import sys
 import os
-import requests
 from classes.parser.Definitions import *
 from classes.parser.Generators import *
 from classes.parser.Expressions import *
@@ -9,6 +8,7 @@ from classes.parser.Expressions import *
 
 try:
     from lark import Lark, Tree
+    import requests
     import PIL
     from svglib.svglib import svg2rlg
     from cairosvg import svg2png
