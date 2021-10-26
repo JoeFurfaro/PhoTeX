@@ -1,4 +1,4 @@
-#+TITLE: Microsoft Hackathon - PhoTex
+#+TITLE: Microsoft Hackathon - PhoTeX
 #+DESCRIPTION: A custom language meant for tech savvy graphic designers who need to design standardized vector graphics for their projects.
 #+AUTHOR: Evan Desjardine, Joe Furfaro, Daniel Genkin, Mark Hutchison, L. Yao
 #+DATE: \today
