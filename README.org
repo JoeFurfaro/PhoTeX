@@ -25,10 +25,11 @@ We are currently using the Lark parser (https://github.com/lark-parser/lark). La
 * Getting Started
     1. If you haven't already, install Python 3.x.x (https://www.python.org/)
     2. Open a terminal window and navigate to the project root
-    3. [Optional] Create a new virtual environment
-    4. Run ~pip install -r requirements.txt~ in the terminal to acquire all pip dependencies
-    5. Navigate to the ~src~ folder
-    5. Create a ~.ptex~ file and write your code!
-    6. Build your code by running ~python photex.py [YOUR_FILE_NAME].ptex~
-    7. If there were no errors, your output files should be located in the same folder as your code
+    3. [Optional] If using conda, import our quickstart environment via ~conda env create -f environment.yml~, and proceed to step 5
+    4. [Optional] Create a new virtual environment
+    5. Run ~pip install -r requirements.txt~ in the terminal to acquire all pip dependencies
+    6. Navigate to the ~src~ folder
+    7. Create a ~.ptex~ file and write your code!
+    8. Build your code by running ~python photex.py [YOUR_FILE_NAME].ptex~
+    9. If there were no errors, your output files should be located in the same folder as your code
 
