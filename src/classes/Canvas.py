@@ -57,6 +57,12 @@ class Canvas(Item):
                 child.start.y += self.canvas_size.y // 2
                 child.end.x += self.canvas_size.x // 2
                 child.end.y += self.canvas_size.y // 2
+            elif type(child) == Polygon:
+                for child_point in child.points:
+                    child_point.x += self.canvas_size.x // 2
+                    child_point.y += self.canvas_size.y // 2
+                child.position.x += self.canvas_size.x // 2
+                child.position.y += self.canvas_size.y // 2
             s += '\t' + child.render() +'\n'
         # Close svg tag and return string
         return s + '</svg>'
