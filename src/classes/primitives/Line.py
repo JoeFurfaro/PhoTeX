@@ -2,18 +2,19 @@ from typing import Union, Optional, Iterable
 from ..Stroke import Stroke
 from ..Fill import Fill
 from ..Item import Item
+from ..Clip import Clip
 from .Shape import Shape
 from ..util.Vector2 import Vector2
 
 class Line(Shape):
     def __init__(self,
-            clipped: bool,
+            clip: Clip,
             start: Vector2, end: Vector2,
             stroke: Stroke,
             children: Iterable[Item] = [], rotation: Union[int, float] = 0
         ):
         position = (end - start) * 2 + start
-        super().__init__(clipped, position,
+        super().__init__(clip, position,
                          stroke=stroke, fill=None,
                          children=children, rotation=rotation)
         self.start: Vector2 = start

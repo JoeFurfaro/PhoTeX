@@ -32,12 +32,15 @@ class Item(object):
     def render(self) -> str:
         raise NotImplementedError
 
-    def render_children(self) -> str:
+    def render_children(self, mask=False) -> str:
         # Start group for children
         s = ('\t' * self.depth) + f'<g transform="translate({self.position.x}, {self.position.y})"'
         # Check if clipped
-        if self.clipped == True:
-            s += f' style="clip-path: url(#{id(self)});"'
+        if self.clip != None:
+            if not mask:
+                s += f' style="clip-path: url(#{id(self)});"'
+            else:
+                s += f' style="mask: url(#{id(self)});"'
         s += '>\n'
         for child in self.children:
             s += ('\t' * (self.depth + 1)) + child.render() + '\n'
