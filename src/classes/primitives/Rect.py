@@ -52,7 +52,7 @@ class Rect(Shape):
         if self.clip != None and self.clip.is_inner():
             s += f'<rect x="{-(self.width // 2) + (stroke_width // 2)}" y="{-(self.height // 2) + (stroke_width // 2)}" width="{self.width - stroke_width}" height="{self.height - stroke_width}"'
         elif self.clip != None and self.clip.is_outer():
-            s += f'<rect x="{-(self.width // 2) - (stroke_width // 2)-1}" y="{-(self.height // 2) - (stroke_width // 2)-1}" width="{self.width + stroke_width+2}" height="{self.height + stroke_width}+2"'
+            s += f'<rect x="{-(self.width // 2) - (stroke_width // 2)-1}" y="{-(self.height // 2) - (stroke_width // 2)-1}" width="{self.width + stroke_width+2}" height="{self.height + stroke_width+2}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
