@@ -2,6 +2,8 @@ from typing import Union, Dict, Iterable
 from .Item import Item
 from .util.Vector2 import Vector2
 from .Font import Font
+from.primitives.Line import Line
+from.primitives.Polygon import Polygon
 from .primitives.Shape import Shape
 from .primitives.Text import Text
 from svglib.svglib import svg2rlg
@@ -50,6 +52,17 @@ class Canvas(Item):
             s += '\t</defs>\n'
         # Render children
         for child in self.children:
+            if type(child) == Line:
+                child.start.x += self.canvas_size.x // 2
+                child.start.y += self.canvas_size.y // 2
+                child.end.x += self.canvas_size.x // 2
+                child.end.y += self.canvas_size.y // 2
+            elif type(child) == Polygon:
+                for child_point in child.points:
+                    child_point.x += self.canvas_size.x // 2
+                    child_point.y += self.canvas_size.y // 2
+                child.position.x += self.canvas_size.x // 2
+                child.position.y += self.canvas_size.y // 2
             s += '\t' + child.render() +'\n'
         # Close svg tag and return string
         return s + '</svg>'
