@@ -43,7 +43,8 @@ class Circle(Shape):
     def defs(self) -> str:
         # Create defs
         s = super().defs()
-        s += f'<circle cx="-{self.position.x}" cy="-{self.position.y}" r="{self.radius}"'
+        stroke_width = 0 if self.stroke == None else self.stroke.width
+        s += f'<circle cx="-{self.position.x}" cy="-{self.position.y}" r="{self.radius+stroke_width}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'

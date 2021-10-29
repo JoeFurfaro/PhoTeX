@@ -37,6 +37,8 @@ class Rect(Shape):
             s += ' ' + self.stroke.render()
         if self.fill != None:
             s += ' ' + self.fill.render()
+        else:
+            s += ' ' + 'fill="#000000" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:
@@ -46,7 +48,7 @@ class Rect(Shape):
 
     def defs(self) -> str:
         s = super().defs()
-        s += f'<rect x="-{self.position.x}" y="-{self.position.y}" width="{self.width}" height="{self.height}"'
+        s += f'<rect x="-{self.width // 2}" y="-{self.height // 2}" width="{self.width}" height="{self.height}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'

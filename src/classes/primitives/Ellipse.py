@@ -46,7 +46,8 @@ class Ellipse(Shape):
     def defs(self) -> str:
         # Create defs
         s = super().defs()
-        s += f'<ellipse cx="-{self.position.x}" cy="-{self.position.y}" rx="{self.rx}" ry="{self.ry}"'
+        stroke_width = 0 if self.stroke == None else self.stroke.width
+        s += f'<ellipse cx="-{self.position.x}" cy="-{self.position.y}" rx="{self.rx+stroke_width}" ry="{self.ry+stroke_width}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'
