@@ -10,6 +10,7 @@ from ..util.Vector2 import Vector2
 
 from ..Fill import Fill
 from ..Stroke import Stroke
+from ..Clip import Clip
 
 from ..parser.Expressions import *
 
@@ -152,14 +153,17 @@ class Generator:
         return 0
 
     @staticmethod
-    def clipped_from_tree_modifier(tree, defs):
+    def clip_from_tree_modifier(tree, defs):
         for modifier in tree.children[0].children:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
-            if type(M) == Token:
+            if type(M) == Tree:
                 if Mname == "clipped":
-                    return True
-        return False
+                    if len(M.children) > 0 and M.children[0].children[0].value == "out":
+                        return Clip(False)
+                    else:
+                        return Clip(True)
+        return None
 
     @staticmethod
     def outline_from_tree_modifier(tree, defs):
@@ -228,14 +232,14 @@ class Generator:
         
 
 class RectGenerator(Generator):
-    def __init__(self, x, y, width_expr, height_expr, fill=None, stroke=None, rotate=0, clipped=False, children=[]):
+    def __init__(self, x, y, width_expr, height_expr, fill=None, stroke=None, rotate=0, clip=None, children=[]):
         self.x, self.y = x, y
         self.width_expr = width_expr
         self.height_expr = height_expr
         self.fill = fill
         self.stroke = stroke
         self.rotate = rotate
-        self.clipped = clipped
+        self.clip = clip
         self.children = children
 
     def generate(self, pw, ph):
@@ -243,7 +247,7 @@ class RectGenerator(Generator):
         height = self.height_expr.eval(pw, ph)
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
         children = self.generate_children(width, height)
-        return Rect(self.clipped, pos, width, height, self.stroke, self.fill, children, self.rotate)
+        return Rect(self.clip, pos, width, height, self.stroke, self.fill, children, self.rotate)
 
     @staticmethod
     def from_parse_tree(tree, defs):
@@ -260,27 +264,27 @@ class RectGenerator(Generator):
         Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
-        clipped = Generator.clipped_from_tree_modifier(tree, defs)
+        clip = Generator.clip_from_tree_modifier(tree, defs)
         stroke = Generator.outline_from_tree_modifier(tree, defs)
 
-        return RectGenerator(x, y, width, height, fill, stroke, rotate, clipped, children)
+        return RectGenerator(x, y, width, height, fill, stroke, rotate, clip, children)
 
 
 class CircleGenerator(Generator):
-    def __init__(self, x, y, radius_expr, fill=None, stroke=None, rotate=0, clipped=False, children=[]):
+    def __init__(self, x, y, radius_expr, fill=None, stroke=None, rotate=0, clip=None, children=[]):
         self.x, self.y = x, y
         self.radius_expr = radius_expr
         self.fill = fill
         self.stroke = stroke
         self.rotate = rotate
-        self.clipped = clipped
+        self.clip = clip
         self.children = children
 
     def generate(self, pw, ph):
         radius = self.radius_expr.eval(pw, ph)
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
         children = self.generate_children(radius*2, radius*2)
-        return Circle(self.clipped, pos, radius, self.stroke, self.fill, children, self.rotate)
+        return Circle(self.clip, pos, radius, self.stroke, self.fill, children, self.rotate)
 
     @staticmethod
     def from_parse_tree(tree, defs):
@@ -295,20 +299,20 @@ class CircleGenerator(Generator):
         Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
-        clipped = Generator.clipped_from_tree_modifier(tree, defs)
+        clip = Generator.clip_from_tree_modifier(tree, defs)
         stroke = Generator.outline_from_tree_modifier(tree, defs)
 
-        return CircleGenerator(x, y, rad, fill, stroke, rotate, clipped, children)
+        return CircleGenerator(x, y, rad, fill, stroke, rotate, clip, children)
 
 class EllipseGenerator(Generator):
-    def __init__(self, x, y, xrad_expr, yrad_expr, fill=None, stroke=None, rotate=0, clipped=False, children=[]):
+    def __init__(self, x, y, xrad_expr, yrad_expr, fill=None, stroke=None, rotate=0, clip=None, children=[]):
         self.x, self.y = x, y
         self.xrad_expr = xrad_expr
         self.yrad_expr = yrad_expr
         self.fill = fill
         self.stroke = stroke
         self.rotate = rotate
-        self.clipped = clipped
+        self.clip = clip
         self.children = children
 
     def generate(self, pw, ph):
@@ -316,7 +320,7 @@ class EllipseGenerator(Generator):
         yrad = self.yrad_expr.eval(pw, ph)
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
         children = self.generate_children(xrad*2, yrad*2)
-        return Ellipse(self.clipped, pos, xrad, yrad, self.stroke, self.fill, children, self.rotate)
+        return Ellipse(self.clip, pos, xrad, yrad, self.stroke, self.fill, children, self.rotate)
     
     @staticmethod
     def from_parse_tree(tree, defs):
@@ -332,10 +336,10 @@ class EllipseGenerator(Generator):
         Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
-        clipped = Generator.clipped_from_tree_modifier(tree, defs)
+        clip = Generator.clip_from_tree_modifier(tree, defs)
         stroke = Generator.outline_from_tree_modifier(tree, defs)
 
-        return EllipseGenerator(x, y, xrad, yrad, fill, stroke, rotate, clipped, children)
+        return EllipseGenerator(x, y, xrad, yrad, fill, stroke, rotate, clip, children)
 
 class LineGenerator(Generator):
     def __init__(self, x1, y1, x2, y2, stroke=None):
@@ -360,12 +364,12 @@ class LineGenerator(Generator):
         return LineGenerator(x1, y1, x2, y2, stroke)
         
 class PolygonGenerator(Generator):
-    def __init__(self, points, fill=None, stroke=None, rotate=0, clipped=False, children=[]):
+    def __init__(self, points, fill=None, stroke=None, rotate=0, clip=None, children=[]):
         self.points = points
         self.fill = fill
         self.stroke = stroke
         self.rotate = rotate
-        self.clipped = clipped
+        self.clip = clip
         self.children = children
 
     def generate(self, pw, ph):
@@ -373,7 +377,7 @@ class PolygonGenerator(Generator):
         xs = [p.x for p in points]
         ys = [p.y for p in points]
         children = self.generate_children(abs(min(xs)-max(xs)), abs(min(ys)-max(ys)))
-        return Polygon(self.clipped, points, self.stroke, self.fill, children, self.rotate)
+        return Polygon(self.clip, points, self.stroke, self.fill, children, self.rotate)
 
     @staticmethod
     def from_parse_tree(tree, defs):
@@ -388,10 +392,10 @@ class PolygonGenerator(Generator):
         Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
-        clipped = Generator.clipped_from_tree_modifier(tree, defs)
+        clip = Generator.clip_from_tree_modifier(tree, defs)
         stroke = Generator.outline_from_tree_modifier(tree, defs)
 
-        return PolygonGenerator(points, fill, stroke, rotate, clipped, children)
+        return PolygonGenerator(points, fill, stroke, rotate, clip, children)
 
 class ImageGenerator(Generator):
     def __init__(self, x, y, width_expr, height_expr=None, path="", rotate=0):

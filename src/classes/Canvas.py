@@ -92,5 +92,5 @@ class Canvas(Item):
             elif isinstance(other, Text):
                 # get font from text and add to defs
                 self.defs_map[other.font.family] = other.font.defs()
-            elif isinstance(other, Shape) and other.clipped == True:
+            elif isinstance(other, Shape) and other.clip != None:
                 self.defs_map[id(other)] = other.defs()

@@ -2,6 +2,7 @@ from typing import Union, Optional, Iterable
 from ..Stroke import Stroke
 from ..Fill import Fill
 from ..Item import Item
+from ..Clip import Clip
 from .Shape import Shape
 from ..util.Vector2 import Vector2
 
@@ -14,7 +15,7 @@ class Polygon(Shape):
     # create circle as an ellipse with same x and y radius
 
     def __init__(self,
-                 clipped: bool,
+                 clip: Clip,
                  points: Iterable[Vector2],
                  stroke: Optional[Stroke] = None, fill: Optional[Fill] = None,
                  children: Iterable[Item] = [], rotation: Union[int, float] = 0
@@ -27,7 +28,7 @@ class Polygon(Shape):
         center.x /= len(points)
         center.y /= len(points)
         # set position to center
-        super().__init__(clipped, center,
+        super().__init__(clip, center,
                         stroke=stroke, fill=fill,
                         children=children, rotation=rotation)
         self.points = points
@@ -50,6 +51,8 @@ class Polygon(Shape):
             s += ' ' + self.stroke.render()
         if self.fill != None:
             s += ' ' + self.fill.render()
+        else:
+            s += ' ' + 'fill="#000000" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:
@@ -66,6 +69,7 @@ class Polygon(Shape):
             if index != len(self.points) - 1:
                 s += ' '
         s += '" '
+        
         # Apply translation for map since it is relative to parent:
         s += f' transform="translate(-{self.position.x}, -{self.position.y})"'
         # Apply rotation if needed

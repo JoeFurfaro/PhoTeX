@@ -13,12 +13,12 @@ class Rect(Shape):
     - cy = y - height//2
     """
     def __init__(self,
-            clipped: bool, position: Vector2,
+            clip: bool, position: Vector2,
             width: Union[int, float], height: Union[int, float],
             stroke: Optional[Stroke] = None, fill: Optional[Fill] = None,
             children: Iterable[Item] = [], rotation: Union[int, float] = 0
         ):
-        super().__init__(clipped, position,
+        super().__init__(clip, position,
                          stroke=stroke, fill=fill,
                          children=children, rotation=rotation)
         self.width: Union[int, float] = width
@@ -37,6 +37,8 @@ class Rect(Shape):
             s += ' ' + self.stroke.render()
         if self.fill != None:
             s += ' ' + self.fill.render()
+        else:
+            s += ' ' + 'fill="#000000" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:
@@ -46,7 +48,11 @@ class Rect(Shape):
 
     def defs(self) -> str:
         s = super().defs()
-        s += f'<rect x="-{self.position.x}" y="-{self.position.y}" width="{self.width}" height="{self.height}"'
+        stroke_width = 0 if self.stroke == None else self.stroke.width
+        if self.clip != None and self.clip.is_inner():
+            s += f'<rect x="{-(self.width // 2)}" y="{-(self.height // 2)}" width="{self.width}" height="{self.height}"'
+        elif self.clip != None and self.clip.is_outer():
+            s += f'<rect x="{-(self.width // 2) - (stroke_width // 2)-1}" y="{-(self.height // 2) - (stroke_width // 2)-1}" width="{self.width + stroke_width+2}" height="{self.height + stroke_width+2}"'
         # Apply rotation if needed
         if abs(self.rotation) > 1e-6:
             s += f' transform="rotate({self.rotation})"'

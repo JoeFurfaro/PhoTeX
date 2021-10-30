@@ -27,15 +27,17 @@ canvas_definition: "canvas" _INLINE_WHITESPACE file_name _INLINE_WHITESPACE size
 item: rect | circle | ellipse | line | polygon | text | image | custom
 
 color: identifier | hex_color
+clip: CLIP_TYPE
+CLIP_TYPE: "in" | "out"
 
 modifier_list: (modifier _INLINE_WHITESPACE)*
-modifier: STATIC_MODIFIER | outlined | rotated
+modifier: STATIC_MODIFIER | outlined | rotated | clipped
 STATIC_MODIFIER: "left"
     | "right"
     | "center"
-    | "clipped"
 outlined: "outlined" _INLINE_WHITESPACE color _INLINE_WHITESPACE thickness [_INLINE_WHITESPACE opacity]
 rotated: "rotated" _INLINE_WHITESPACE angle
+clipped: "clipped" [_INLINE_WHITESPACE clip]
 
 ?sum: product
     | sum "+" product         -> add
