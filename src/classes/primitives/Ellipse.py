@@ -51,7 +51,7 @@ class Ellipse(Shape):
         s = super().defs()
         stroke_width = 0 if self.stroke == None else self.stroke.width
         if self.clip != None and self.clip.is_inner():
-            s += f'<ellipse cx="0" cy="0" rx="{self.rx-stroke_width//2}" ry="{self.ry-stroke_width//2}"'
+            s += f'<ellipse cx="0" cy="0" rx="{self.rx}" ry="{self.ry}"'
         elif self.clip != None and self.clip.is_outer():
             s += f'<ellipse cx="0" cy="0" rx="{self.rx+stroke_width//2+1}" ry="{self.ry+stroke_width//2+1}"'
         # Apply rotation if needed

@@ -50,7 +50,7 @@ class Rect(Shape):
         s = super().defs()
         stroke_width = 0 if self.stroke == None else self.stroke.width
         if self.clip != None and self.clip.is_inner():
-            s += f'<rect x="{-(self.width // 2) + (stroke_width // 2)}" y="{-(self.height // 2) + (stroke_width // 2)}" width="{self.width - stroke_width}" height="{self.height - stroke_width}"'
+            s += f'<rect x="{-(self.width // 2)}" y="{-(self.height // 2)}" width="{self.width}" height="{self.height}"'
         elif self.clip != None and self.clip.is_outer():
             s += f'<rect x="{-(self.width // 2) - (stroke_width // 2)-1}" y="{-(self.height // 2) - (stroke_width // 2)-1}" width="{self.width + stroke_width+2}" height="{self.height + stroke_width+2}"'
         # Apply rotation if needed

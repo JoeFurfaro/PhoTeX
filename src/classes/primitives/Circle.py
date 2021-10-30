@@ -48,7 +48,7 @@ class Circle(Shape):
         s = super().defs()
         stroke_width = 0 if self.stroke == None else self.stroke.width
         if self.clip != None and self.clip.is_inner():
-            s += f'<circle cx="0" cy="0" r="{self.radius-stroke_width//2}"'
+            s += f'<circle cx="0" cy="0" r="{self.radius}"'
         elif self.clip != None and self.clip.is_outer():
             s += f'<circle cx="0" cy="0" r="{self.radius+stroke_width//2+1}"'
         # Apply rotation if needed
