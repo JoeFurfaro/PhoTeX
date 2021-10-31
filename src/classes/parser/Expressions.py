@@ -1,4 +1,4 @@
-from Constants import *
+from .Constants import *
 
 class Literal:
     def __init__(self, v):

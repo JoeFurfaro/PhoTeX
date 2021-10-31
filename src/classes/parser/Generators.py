@@ -16,7 +16,7 @@ from ..parser.Expressions import *
 
 from lark import Tree, Token
 
-from Constants import *
+from .Constants import *
 
 import PIL
 import sys

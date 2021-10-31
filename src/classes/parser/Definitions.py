@@ -2,7 +2,7 @@ from ..Font import Font
 from ..parser.Generators import *
 from ..Canvas import Canvas
 from ..util.Vector2 import Vector2
-from Constants import *
+from .Constants import *
 
 class ColorDef:
     def __init__(self, ID : str, hex : str):

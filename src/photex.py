@@ -91,7 +91,7 @@ class Parser:
             ID = x.children[0].children[0]
             font_name = x.children[1].children[0][1:-1]
             font_size = int(x.children[2].children[0])
-            font_weight = FONT_WEIGHTS.REGULAR
+            font_weight = FONT_WEIGHT.REGULAR.value
             if len(x.children) > 3:
                 font_weight = x.children[3].children[0].value
             if self.defs.has_font(ID.value):
