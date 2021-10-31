@@ -1,3 +1,5 @@
+from Constants import *
+
 class Literal:
     def __init__(self, v):
         self.v = v
@@ -14,14 +16,14 @@ class Integer(Literal):
 
 class WidthRatio(Literal):
     def __str__(self):
-        return str(self.v) + "w"
+        return str(self.v) + UNIT.W.value
 
     def eval(self, pw, ph):
         return (self.v / 100) * pw
 
 class HeightRatio(Literal):
     def __str__(self):
-        return str(self.v) + "h"
+        return str(self.v) + UNIT.H.value
     
     def eval(self, pw, ph):
         return (self.v / 100) * ph
@@ -84,9 +86,9 @@ def expression_from_subtree(tree):
             return Integer(value)
         else:
             unit = tree.children[1].children[0].value
-            if unit == "h":
+            if unit == UNIT.H.value:
                 return HeightRatio(value)
-            elif unit == "w":
+            elif unit == UNIT.W.value:
                 return WidthRatio(value)
     elif T == "add":
         return Addition(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))

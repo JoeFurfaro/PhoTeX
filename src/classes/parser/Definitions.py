@@ -2,6 +2,7 @@ from ..Font import Font
 from ..parser.Generators import *
 from ..Canvas import Canvas
 from ..util.Vector2 import Vector2
+from Constants import *
 
 class ColorDef:
     def __init__(self, ID : str, hex : str):
@@ -9,7 +10,7 @@ class ColorDef:
         self.hex = hex # Hex code in the form "#AAAAAA"
 
 class FontDef:
-    def __init__(self, ID : str, font_name : str, font_size : int, font_weight : str = "regular"):
+    def __init__(self, ID : str, font_name : str, font_size : int, font_weight : str = FONT_WEIGHT.REGULAR.value):
         self.ID = ID # Identifier
         self.font_name = font_name # Font name
         self.font_size = font_size # Font size

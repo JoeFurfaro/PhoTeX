@@ -5,7 +5,7 @@ from ..Item import Item
 from ..Clip import Clip
 from .Shape import Shape
 from ..util.Vector2 import Vector2
-
+from ..parser.Constants import DEFAULTS
 
 class Ellipse(Shape):
     """
@@ -38,7 +38,7 @@ class Ellipse(Shape):
         if self.fill != None:
             s += ' ' + self.fill.render()
         else:
-            s += ' ' + 'fill="#000000" fill-opacity="0.0"'
+            s += ' ' + f'fill="{DEFAULTS.COLOR}" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:

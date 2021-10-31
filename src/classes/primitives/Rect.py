@@ -4,6 +4,7 @@ from ..Stroke import Stroke
 from ..Fill import Fill
 from ..Item import Item
 from ..util.Vector2 import Vector2
+from ..parser.Constants import DEFAULTS
 
 class Rect(Shape):
     """
@@ -38,7 +39,7 @@ class Rect(Shape):
         if self.fill != None:
             s += ' ' + self.fill.render()
         else:
-            s += ' ' + 'fill="#000000" fill-opacity="0.0"'
+            s += ' ' + f'fill="{DEFAULTS.COLOR}" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:

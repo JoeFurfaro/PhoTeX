@@ -10,6 +10,9 @@ def asList(enum):
         result.append(val.value)
     return result
 
+class DEFAULTS:
+	COLOR = "#000"
+
 class IMG_FORMATS(Enum):
     JPG = "jpg"
     JPEG = "jpeg"

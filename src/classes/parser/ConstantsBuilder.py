@@ -1,3 +1,5 @@
+#Script to generate the Constants.py file
+
 # all definitions must end with this suffix
 definitionSuffix = "_definition"
 
@@ -18,7 +20,7 @@ with open("../../global_grammar.lark") as grammar: # TODO use regex?
             definitions.append((identifier[0:identifier.find(definitionSuffix)].upper(), identifier))
             currentEnum = ""
 
-        # if the line is an identifier (TODO find a better option tan valid ptyhon identifier)
+        # if the line is an identifier (TODO find a better option tan valid python identifier)
         elif (identifier.isidentifier() and identifier.islower()):
             attributes.append((identifier.upper(), identifier))
 
@@ -28,8 +30,7 @@ with open("../../global_grammar.lark") as grammar: # TODO use regex?
 
 # TODO now loop over and make sure we don't have any enums that are marked as "%ignore"
 
-
-# TODO generate the Constants.py file
+# generate the Constants.py file
 header = '''# AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY
 # To regenerate run `python3 ConstantsBuilder.py` form this directory
 
@@ -47,6 +48,9 @@ extraConstants = '''class IMG_FORMATS(Enum):
     JPEG = "jpeg"
     PNG = "png"
     SVG = "svg"
+    
+class DEFAULTS:
+	COLOR = "#000"
 '''
 
 strDefs = "class DEFS (Enum):\n"
