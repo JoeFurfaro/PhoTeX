@@ -33,3 +33,10 @@ We are currently using the Lark parser (https://github.com/lark-parser/lark). La
     8. Build your code by running ~python photex.py [YOUR_FILE_NAME].ptex~
     9. If there were no errors, your output files should be located in the same folder as your code
 
+* Troubleshooting setuo
+You need to make sure to have `cairo` isntalled on your system to use the Python bindings.
+
+** MacOS instructions (other platforms will be similar):
+1.~brew install pkg-config~
+2.~brew install cairo~
+3.~pip3 install pycairo~
