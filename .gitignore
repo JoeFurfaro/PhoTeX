@@ -4,6 +4,11 @@
 ### PhoTeX Ignores ###
 
 *.ptex
+!examples/**/.ptex
+!examples/**/.svg
+!examples/**/.png
+!examples/**/.jpg
+
 *.jpg
 *.jpeg
 *.png
