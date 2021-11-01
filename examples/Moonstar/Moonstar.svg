@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="500" height="500">
+	<defs>
+		<clipPath id="140196059324544" clipPathUnits="userSpaceOnUse">
+			<circle cx="0" cy="0" r="182.0" />
+		</clipPath>
+	</defs>
+	<circle cx="250" cy="250" r="225.0" stroke="#fff" stroke-width="2" stroke-opacity="1" fill="#3e215f" fill-opacity="1.0" />
+	<g transform="translate(250, 250)">
+		<circle cx="0" cy="0" r="180.0" stroke="#fff" stroke-width="2" stroke-opacity="1" fill="#b1539e" fill-opacity="1.0" />
+		<g transform="translate(0, 0)" style="clip-path: url(#140196059324544);">
+			<circle cx="90.0" cy="-90.0" r="144.0" stroke="#fff" stroke-width="2" stroke-opacity="1" fill="#3e215f" fill-opacity="1.0" />
+		</g>
+		<rect x="-118.5" y="-163.5" width="283.5" height="283.5" fill="#000000" fill-opacity="0.0" />
+		<g transform="translate(22.5, -22.5)">
+			<polygon points="0,70.875 -90.72,141.75 -68.03999999999999,28.35 -141.75,-28.35 -39.690000000000005,-42.525 0,-141.75 39.690000000000005,-42.525 141.75,-28.35 68.03999999999999,28.35 90.72,141.75"  stroke="#fff" stroke-width="2" stroke-opacity="1" fill="#d79cc4" fill-opacity="1.0" />
+		</g>
+	</g>
+</svg>

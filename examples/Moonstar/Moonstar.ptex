@@ -9,7 +9,7 @@ define star {
 
 canvas "Moonstar.png" 500 500 {
     outlined white 2 circle 0 0 45w bgColor {
-        clipped outlined white 2 circle 0 0 40w moonColor {
+        clipped out outlined white 2 circle 0 0 40w moonColor {
             outlined white 2 circle 25w -25h 40w bgColor
         }
         star 5w -5h 63w 63h
