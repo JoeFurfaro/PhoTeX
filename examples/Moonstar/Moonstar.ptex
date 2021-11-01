@@ -1,0 +1,17 @@
+define color starColor #d79cc4
+define color moonColor #b1539e
+define color bgColor #3e215f
+define color white #fff
+
+define star {
+    outlined white 2 polygon 0 25h -32w 50h -24w 10h -50w -10h -14w -15h 0 -50h 14w -15h 50w -10h 24w 10h 32w 50h starColor
+}
+
+canvas "Moonstar.png" 500 500 {
+    outlined white 2 circle 0 0 45w bgColor {
+        clipped outlined white 2 circle 0 0 40w moonColor {
+            outlined white 2 circle 25w -25h 40w bgColor
+        }
+        star 5w -5h 63w 63h
+    }
+}
