@@ -37,6 +37,6 @@ We are currently using the Lark parser (https://github.com/lark-parser/lark). La
 You need to make sure to have `cairo` isntalled on your system to use the Python bindings.
 
 ** MacOS instructions (other platforms will be similar):
-1. ~brew install pkg-config~
-2. ~brew install cairo~
-3. ~pip3 install pycairo~
+    1. ~brew install pkg-config~
+    2. ~brew install cairo~
+    3. ~pip3 install pycairo~
