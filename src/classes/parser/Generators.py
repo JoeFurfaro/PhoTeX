@@ -192,7 +192,7 @@ class Generator:
     def stroke_from_tree(tree, defs):
         data = [x.data for x in tree.children]
         thickness = 1
-        color = DEFAULTS.COLOR
+        color = DEFAULTS.FILL_COLOR
         if ATTRIBS.THICKNESS.value in data:
             thick_tree = Generator.find_in_tree(tree, ATTRIBS.THICKNESS.value)
             thickness = int(thick_tree[0].value)

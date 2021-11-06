@@ -50,7 +50,7 @@ extraConstants = '''class IMG_FORMATS(Enum):
     SVG = "svg"
     
 class DEFAULTS:
-	COLOR = "#000"
+	FILL_COLOR = "#000"
 '''
 
 strDefs = "class DEFS (Enum):\n"

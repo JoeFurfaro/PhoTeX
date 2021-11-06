@@ -39,7 +39,7 @@ class Rect(Shape):
         if self.fill != None:
             s += ' ' + self.fill.render()
         else:
-            s += ' ' + f'fill="{DEFAULTS.COLOR}" fill-opacity="0.0"'
+            s += ' ' + f'fill="{DEFAULTS.FILL_COLOR}" fill-opacity="0.0"'
         s += ' />'
         # Render Children
         if len(self.children) > 0:

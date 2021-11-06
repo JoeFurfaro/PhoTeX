@@ -11,7 +11,7 @@ def asList(enum):
     return result
 
 class DEFAULTS:
-	COLOR = "#000"
+	FILL_COLOR = "#000"
 
 class IMG_FORMATS(Enum):
     JPG = "jpg"
