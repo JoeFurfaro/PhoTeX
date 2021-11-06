@@ -69,7 +69,7 @@ class Generator:
                 if type_def.has_preset_size():
                     width = type_def.width
                     height = type_def.height
-                else :
+                else:
                     width_tree = Generator.find_in_tree(item, ATTRIBS.SIZE.value)
                     if width_tree != None:
                         width = expression_from_tree(Generator.find_in_tree(item, ATTRIBS.SIZE.value)[0])
@@ -213,11 +213,11 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Token:
-                if Mname == "left":
-                    return "left"
-                elif Mname == "right": # TODO unhardcode 
-                    return "right"
-        return "center"
+                if Mname == STATIC_MODIFIER.LEFT:
+                    return STATIC_MODIFIER.LEFT
+                elif Mname == STATIC_MODIFIER.RIGHT:
+                    return STATIC_MODIFIER.RIGHT
+        return STATIC_MODIFIER.CENTER
 
     @staticmethod
     def validate_modifiers(tree, allowed_modifiers):
@@ -441,7 +441,7 @@ class ImageGenerator(Generator):
         return ImageGenerator(x, y, width, height, path, rotate)
 
 class TextGenerator(Generator):
-    def __init__(self, x, y, text, font, color, align="center", width_expr=None, rotate=0):
+    def __init__(self, x, y, text, font, color, align=STATIC_MODIFIER.CENTER, width_expr=None, rotate=0):
         self.x, self.y = x, y
         self.text = text
         self.font = font
@@ -456,9 +456,9 @@ class TextGenerator(Generator):
             width = self.width_expr.eval(pw, ph)
         
         align = Anchor.CENTER
-        if self.align == "left":
+        if self.align == STATIC_MODIFIER.LEFT:
             align = Anchor.LEFT
-        elif self.align == "right":
+        elif self.align == STATIC_MODIFIER.RIGHT:
             align = Anchor.RIGHT
 
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
@@ -478,7 +478,7 @@ class TextGenerator(Generator):
         if ATTRIBS.EXPRESSION.value in data:
             width_expr = expression_from_tree(tree.children[4])
 
-        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, "left", "center", "right"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, STATIC_MODIFIER.LEFT, STATIC_MODIFIER.CENTER, STATIC_MODIFIER.RIGHT))
 
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         align = Generator.align_from_tree_modifier(tree, defs)

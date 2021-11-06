@@ -79,7 +79,7 @@ def expression_from_tree(tree):
 
 def expression_from_subtree(tree):
     T = tree.data
-    if T == "value":
+    if T == "value": #TODO unhardcode
         v = tree.children[0]
         value = int(v.value)
         if len(tree.children) == 1:

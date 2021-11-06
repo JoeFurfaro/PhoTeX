@@ -1,34 +1,60 @@
 #Script to generate the Constants.py file
 
+import re
+
 # all definitions must end with this suffix
 definitionSuffix = "_definition"
+
+# enums to exclude (write in all caps)
+excludedEnums = ["HEX_COLOR"]
 
 definitions = []
 attributes = []
 enums = []
-with open("../../global_grammar.lark") as grammar: # TODO use regex?
+ignoredEnums = []
+ignoredEnums.extend(excludedEnums)
+with open("../../global_grammar.lark") as grammar: 
+    prevLineWasEnum = False
     while (line := grammar.readline()):
         line = line.strip()
-        if (line.startswith("_") or len(line) == 0):
+        if (len(line) == 0 or line[0] == "_" or line[0:2] in ("//", "/*", "*/")):
+            continue
+        elif line[0:7] == "%ignore":
+            ignoredEnums.append(line[8:])
             continue
 
         identifierEndIndex = line.find(":")
-        identifier = line[0:identifierEndIndex]
+        if (identifierEndIndex != -1):
 
-        # if the line is a definition
-        if (identifier.endswith(definitionSuffix)):
-            definitions.append((identifier[0:identifier.find(definitionSuffix)].upper(), identifier))
-            currentEnum = ""
+            identifier = line[0:identifierEndIndex]
 
-        # if the line is an identifier (TODO find a better option tan valid python identifier)
-        elif (identifier.isidentifier() and identifier.islower()):
-            attributes.append((identifier.upper(), identifier))
+            # if the line is a definition
+            if (identifier.endswith(definitionSuffix)):
+                definitions.append((identifier[0:identifier.find(definitionSuffix)].upper(), identifier))
+                prevLineWasEnum = False
 
-        # if the line is a terminal (i.e. enum) # TODO currently all enums values must be on 1 line
-        elif (identifier.isidentifier() and identifier.isupper() and line.__contains__("|")):
-            enums.append((identifier, line[identifierEndIndex+1:].replace("\"","").replace(" ", "").split("|")))
+            # if the line is a terminal (i.e. enum)
+            elif (re.search("[A-Z0-9]+[A-Z0-9_]*",identifier) is not None):
+                enums.append((identifier, line[identifierEndIndex+1:].replace("\"","").replace(" ", "").split("|")))
+                prevLineWasEnum = True
 
-# TODO now loop over and make sure we don't have any enums that are marked as "%ignore"
+            # if the line is an identifier
+            elif (re.search("(\?)?[a-z0-9]+[a-zA-Z0-9_]*",identifier) is not None):
+                if (identifier[0] == "?"):
+                    attributes.append((identifier[1:].upper(), identifier[1:]))
+                    prevLineWasEnum = False
+                else:
+                    attributes.append((identifier.upper(), identifier))
+                    prevLineWasEnum = False
+
+        elif line.startswith("|") and prevLineWasEnum:
+            enums[-1][1].extend(line.replace("\"","").replace(" ", "").split("|"))
+            prevLineWasEnum = True
+
+
+# remove ignored enums from the list
+enums = list(filter(lambda x : x[0] not in ignoredEnums, enums))
+
 
 # generate the Constants.py file
 header = '''# AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY
@@ -69,6 +95,8 @@ strEnums = ""
 for e in enums:
     strEnums += f"class {e[0]} (Enum):\n"
     for v in e[1]:
+        if (len(v) == 0): # TODO find a way such that we can't get empty values
+            continue
         strEnums += f"\t {v.upper()} = \"{v}\"\n"
     strEnums += "\n"
 

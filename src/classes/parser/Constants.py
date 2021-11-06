@@ -10,14 +10,14 @@ def asList(enum):
         result.append(val.value)
     return result
 
-class DEFAULTS:
-	FILL_COLOR = "#000"
-
 class IMG_FORMATS(Enum):
     JPG = "jpg"
     JPEG = "jpeg"
     PNG = "png"
     SVG = "svg"
+    
+class DEFAULTS:
+	FILL_COLOR = "#000"
 
 class DEFS (Enum):
 	 COLOR = "color_definition"
@@ -44,6 +44,9 @@ class ATTRIBS (Enum):
 	 OUTLINED = "outlined"
 	 ROTATED = "rotated"
 	 CLIPPED = "clipped"
+	 SUM = "sum"
+	 PRODUCT = "product"
+	 ATOM = "atom"
 	 UNIT = "unit"
 	 EXPRESSION = "expression"
 	 POSITION = "position"
@@ -71,6 +74,11 @@ class FONT_WEIGHT (Enum):
 class CLIP_TYPE (Enum):
 	 IN = "in"
 	 OUT = "out"
+
+class STATIC_MODIFIER (Enum):
+	 LEFT = "left"
+	 RIGHT = "right"
+	 CENTER = "center"
 
 class UNIT (Enum):
 	 H = "h"
