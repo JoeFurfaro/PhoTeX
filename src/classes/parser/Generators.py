@@ -213,11 +213,11 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Token:
-                if Mname == STATIC_MODIFIER.LEFT:
-                    return STATIC_MODIFIER.LEFT
-                elif Mname == STATIC_MODIFIER.RIGHT:
-                    return STATIC_MODIFIER.RIGHT
-        return STATIC_MODIFIER.CENTER
+                if Mname == STATIC_MODIFIER.LEFT.value:
+                    return STATIC_MODIFIER.LEFT.value
+                elif Mname == STATIC_MODIFIER.RIGHT.value:
+                    return STATIC_MODIFIER.RIGHT.value
+        return STATIC_MODIFIER.CENTER.value
 
     @staticmethod
     def validate_modifiers(tree, allowed_modifiers):
@@ -441,7 +441,7 @@ class ImageGenerator(Generator):
         return ImageGenerator(x, y, width, height, path, rotate)
 
 class TextGenerator(Generator):
-    def __init__(self, x, y, text, font, color, align=STATIC_MODIFIER.CENTER, width_expr=None, rotate=0):
+    def __init__(self, x, y, text, font, color, align=STATIC_MODIFIER.CENTER.value, width_expr=None, rotate=0):
         self.x, self.y = x, y
         self.text = text
         self.font = font
@@ -456,9 +456,9 @@ class TextGenerator(Generator):
             width = self.width_expr.eval(pw, ph)
         
         align = Anchor.CENTER
-        if self.align == STATIC_MODIFIER.LEFT:
+        if self.align == STATIC_MODIFIER.LEFT.value:
             align = Anchor.LEFT
-        elif self.align == STATIC_MODIFIER.RIGHT:
+        elif self.align == STATIC_MODIFIER.RIGHT.value:
             align = Anchor.RIGHT
 
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
@@ -478,7 +478,7 @@ class TextGenerator(Generator):
         if ATTRIBS.EXPRESSION.value in data:
             width_expr = expression_from_tree(tree.children[4])
 
-        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, STATIC_MODIFIER.LEFT, STATIC_MODIFIER.CENTER, STATIC_MODIFIER.RIGHT))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, STATIC_MODIFIER.LEFT.value, STATIC_MODIFIER.CENTER.value, STATIC_MODIFIER.RIGHT.value))
 
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         align = Generator.align_from_tree_modifier(tree, defs)

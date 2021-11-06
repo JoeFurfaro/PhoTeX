@@ -47,6 +47,7 @@ with open("../../global_grammar.lark") as grammar:
                     attributes.append((identifier.upper(), identifier))
                     prevLineWasEnum = False
 
+        # if line is a continuation of an enum
         elif line.startswith("|") and prevLineWasEnum:
             enums[-1][1].extend(line.replace("\"","").replace(" ", "").split("|"))
             prevLineWasEnum = True
@@ -112,3 +113,7 @@ output = f'''
 f = open("Constants.py", "w")
 f.write(output)
 f.close()
+
+
+# TODO - bunch misc things surrounded by quotes into FLOW enum
+# TODO - add alias support (just add them all to attribs)
