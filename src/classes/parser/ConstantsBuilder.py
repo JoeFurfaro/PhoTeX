@@ -11,6 +11,7 @@ excludedEnums = ["HEX_COLOR"]
 definitions = []
 attributes = []
 enums = []
+aliases = []
 ignoredEnums = []
 ignoredEnums.extend(excludedEnums)
 with open("../../global_grammar.lark") as grammar: 
@@ -21,6 +22,12 @@ with open("../../global_grammar.lark") as grammar:
             continue
         elif line[0:7] == "%ignore":
             ignoredEnums.append(line[8:])
+            continue
+
+        aliasIndex = line.find("->")
+        if aliasIndex != -1 and line[aliasIndex+3] != "_":
+            alias = line[aliasIndex + 3:]
+            aliases.append((alias.upper(), alias))
             continue
 
         identifierEndIndex = line.find(":")
@@ -56,7 +63,6 @@ with open("../../global_grammar.lark") as grammar:
 # remove ignored enums from the list
 enums = list(filter(lambda x : x[0] not in ignoredEnums, enums))
 
-
 # generate the Constants.py file
 header = '''# AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY
 # To regenerate run `python3 ConstantsBuilder.py` form this directory
@@ -85,6 +91,10 @@ strDefs = "class DEFS (Enum):\n"
 for d in definitions:
     strDefs += f"\t {d[0]} = \"{d[1]}\"\n"
 
+strAlias = "class ALIASES (Enum):\n"
+
+for a in aliases:
+    strAlias += f"\t {a[0]} = \"{a[1]}\"\n"
 
 strAttribs = "class ATTRIBS (Enum):\n"
 
@@ -102,18 +112,13 @@ for e in enums:
     strEnums += "\n"
 
 
-output = f'''
-{header}
+output = f'''{header}
 {extraConstants}
 {strDefs}
+{strAlias}
 {strAttribs}
-{strEnums}
-'''
+{strEnums}'''
 
 f = open("Constants.py", "w")
 f.write(output)
 f.close()
-
-
-# TODO - bunch misc things surrounded by quotes into FLOW enum
-# TODO - add alias support (just add them all to attribs)

@@ -1,4 +1,3 @@
-
 # AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY
 # To regenerate run `python3 ConstantsBuilder.py` form this directory
 
@@ -25,6 +24,15 @@ class DEFS (Enum):
 	 TYPE = "type_definition"
 	 CANVAS = "canvas_definition"
 
+class ALIASES (Enum):
+	 ADD = "add"
+	 SUB = "sub"
+	 MUL = "mul"
+	 DIV = "div"
+	 VALUE = "value"
+	 NEG = "neg"
+	 UNIT = "unit"
+
 class ATTRIBS (Enum):
 	 START = "start"
 	 IDENTIFIER = "identifier"
@@ -46,8 +54,6 @@ class ATTRIBS (Enum):
 	 CLIPPED = "clipped"
 	 SUM = "sum"
 	 PRODUCT = "product"
-	 ATOM = "atom"
-	 UNIT = "unit"
 	 EXPRESSION = "expression"
 	 POSITION = "position"
 	 SIZE = "size"
@@ -83,5 +89,4 @@ class STATIC_MODIFIER (Enum):
 class UNIT (Enum):
 	 H = "h"
 	 W = "w"
-
 

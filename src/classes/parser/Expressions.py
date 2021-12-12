@@ -79,7 +79,7 @@ def expression_from_tree(tree):
 
 def expression_from_subtree(tree):
     T = tree.data
-    if T == "value": #TODO unhardcode
+    if T == ALIASES.VALUE.value:
         v = tree.children[0]
         value = int(v.value)
         if len(tree.children) == 1:
@@ -90,15 +90,15 @@ def expression_from_subtree(tree):
                 return HeightRatio(value)
             elif unit == UNIT.W.value:
                 return WidthRatio(value)
-    elif T == "add":
+    elif T == ALIASES.ADD.value:
         return Addition(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
-    elif T == "sub":
+    elif T == ALIASES.SUB.value:
         return Subtraction(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
-    elif T == "mul":
+    elif T == ALIASES.MUL.value:
         return Multiplication(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
-    elif T == "div":
+    elif T == ALIASES.DIV.value:
         return Division(expression_from_subtree(tree.children[0]), expression_from_subtree(tree.children[1]))
-    elif T == "neg":
+    elif T == ALIASES.NEG.value:
         return UnaryMinus(expression_from_subtree(tree.children[0]))
 
 def find_in_tree(tree, key):
