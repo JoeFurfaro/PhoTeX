@@ -4,7 +4,7 @@ import os
 from classes.parser.Definitions import *
 from classes.parser.Generators import *
 from classes.parser.Expressions import *
-
+from classes.parser.Constants import *
 
 try:
     from lark import Lark, Tree
@@ -13,7 +13,7 @@ try:
     from svglib.svglib import svg2rlg
     from cairosvg import svg2png
 except:
-    print("Please run `pip install lark Pillow svglib --upgrade` and start the program again")
+    print("Please run `pip install -r requirements.txt` and start the program again")
     exit()
 
 class Parser:
@@ -30,11 +30,10 @@ class Parser:
             exit()
 
         # print(parseTree)
-
-        color_defs = [x for x in parseTree.children if x.data == "color_definition"]
-        font_defs = [x for x in parseTree.children if x.data == "font_definition"]
-        type_defs = [x for x in parseTree.children if x.data == "type_definition"]
-        canvas_defs = [x for x in parseTree.children if x.data == "canvas_definition"]
+        color_defs = [x for x in parseTree.children if x.data == DEFS.COLOR.value]
+        font_defs = [x for x in parseTree.children if x.data == DEFS.FONT.value]
+        type_defs = [x for x in parseTree.children if x.data == DEFS.TYPE.value]
+        canvas_defs = [x for x in parseTree.children if x.data == DEFS.CANVAS.value]
 
         self.process_color_defs(color_defs)
         print("Registered " + str(len(self.defs.colors)) + " color definition(s)")
@@ -54,8 +53,8 @@ class Parser:
 
             # IN A RUSH! TODO: BETTER FILE NAME VALIDATION (using regex?)
 
-            if ext.lower() not in ("png", "svg", "jpg", "jpeg"):
-                Generator.exception(file_token.line, file_token.column, ": Canvas name must have extension SVG, PNG, or JPG")
+            if ext.lower() not in asList(IMG_FORMATS):
+                Generator.exception(file_token.line, file_token.column, f": Canvas name must have extension one of the following extensions: {', '.join(asList(IMG_FORMATS))}")
 
             if self.defs.has_canvas(file_name):
                 Generator.exception(file_token.line, file_token.column, ": Canvas name '" + file_name + "' is already in use")
@@ -92,7 +91,7 @@ class Parser:
             ID = x.children[0].children[0]
             font_name = x.children[1].children[0][1:-1]
             font_size = int(x.children[2].children[0])
-            font_weight = "regular"
+            font_weight = FONT_WEIGHT.REGULAR.value
             if len(x.children) > 3:
                 font_weight = x.children[3].children[0].value
             if self.defs.has_font(ID.value):

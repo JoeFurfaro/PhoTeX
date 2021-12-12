@@ -82,7 +82,7 @@ class Canvas(Item):
             fh.write(self.render())
         # Export the svg to whatever file type they specified
         if self.file_format != "svg":
-            svg2png(bytestring=self.render(),write_to=self.file_name + ".png")
+            svg2png(bytestring=self.render(),write_to=self.file_name + ".png") # TODO jpg?
 
 
     def add_def(self, other: Union[Font, Shape, Text]):

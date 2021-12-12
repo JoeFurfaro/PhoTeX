@@ -16,6 +16,8 @@ from ..parser.Expressions import *
 
 from lark import Tree, Token
 
+from .Constants import *
+
 import PIL
 import sys
 
@@ -37,29 +39,29 @@ class Generator:
         item_list = [i.children[0] for i in item_list_tree]
         for item in item_list:
             T = item.data
-            if T == "rect":
+            if T == ATTRIBS.RECT.value:
                 generators.append(RectGenerator.from_parse_tree(item, defs))
-            elif T == "circle":
+            elif T == ATTRIBS.CIRCLE.value:
                 generators.append(CircleGenerator.from_parse_tree(item, defs))
-            elif T == "ellipse":
+            elif T == ATTRIBS.ELLIPSE.value:
                 generators.append(EllipseGenerator.from_parse_tree(item, defs))
-            elif T == "line":
+            elif T == ATTRIBS.LINE.value:
                 generators.append(LineGenerator.from_parse_tree(item, defs))
-            elif T == "polygon":
+            elif T == ATTRIBS.POLYGON.value:
                 generators.append(PolygonGenerator.from_parse_tree(item, defs))
-            elif T == "image":
+            elif T == ATTRIBS.IMAGE.value:
                 generators.append(ImageGenerator.from_parse_tree(item, defs))
-            elif T == "text":
+            elif T == ATTRIBS.TEXT.value:
                 generators.append(TextGenerator.from_parse_tree(item, defs))
-            elif T == "custom":
+            elif T == ATTRIBS.CUSTOM.value:
                 # Lookup for custom type identifier
-                ID_tree = Generator.find_in_tree(item, "identifier")
+                ID_tree = Generator.find_in_tree(item, ATTRIBS.IDENTIFIER.value)
                 ID = ID_tree[0]
                 if not defs.has_type(ID.value):
                     Generator.exception(ID.line, ID.column, "Custom type with identifier '" + ID.value + "' has not been declared")
                 type_def = defs.get_type(ID.value)
-                x = expression_from_tree(Generator.find_in_tree(item, "position")[0])
-                y = expression_from_tree(Generator.find_in_tree(item, "position")[1])
+                x = expression_from_tree(Generator.find_in_tree(item, ATTRIBS.POSITION.value)[0])
+                y = expression_from_tree(Generator.find_in_tree(item, ATTRIBS.POSITION.value)[1])
 
                 width = None
                 height = None
@@ -67,11 +69,11 @@ class Generator:
                 if type_def.has_preset_size():
                     width = type_def.width
                     height = type_def.height
-                else :
-                    width_tree = Generator.find_in_tree(item, "size")
+                else:
+                    width_tree = Generator.find_in_tree(item, ATTRIBS.SIZE.value)
                     if width_tree != None:
-                        width = expression_from_tree(Generator.find_in_tree(item, "size")[0])
-                        height = expression_from_tree(Generator.find_in_tree(item, "size")[1])
+                        width = expression_from_tree(Generator.find_in_tree(item, ATTRIBS.SIZE.value)[0])
+                        height = expression_from_tree(Generator.find_in_tree(item, ATTRIBS.SIZE.value)[1])
 
                 if width == None or height == None:
                     Generator.exception(ID.line, ID.column, "Variable-sized custom type declaration must include width and height")
@@ -90,25 +92,25 @@ class Generator:
     def children_from_tree(tree, defs):
         data = [x.data for x in tree.children]
         children = []
-        if "item_list" in data:
-            item_list = Generator.find_in_tree(tree, "item_list")
+        if ATTRIBS.ITEM_LIST.value in data:
+            item_list = Generator.find_in_tree(tree, ATTRIBS.ITEM_LIST.value)
             children = Generator.from_item_list(item_list, defs)
         return children
         
     @staticmethod
     def fill_from_tree(tree, defs):
         data = [x.data for x in tree.children]
-        if "color" in data:
-            c_tree = Generator.find_in_tree(tree, "color")
+        if ATTRIBS.COLOR.value in data:
+            c_tree = Generator.find_in_tree(tree, ATTRIBS.COLOR.value)
             fill_color = None
             color_type = c_tree[0].data
             c_token = c_tree[0].children[0]
-            if color_type == "identifier":
+            if color_type == ATTRIBS.IDENTIFIER.value:
                 cID = c_token.value
                 fill_color = defs.get_color(cID)
                 if fill_color == None:
                     Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + cID + "' in fill color")
-            elif color_type == "hex_color":
+            elif color_type == ATTRIBS.HEX_COLOR.value:
                 fill_color = str(c_token.value)
             return Fill(fill_color, 1.0)
         return None
@@ -116,25 +118,25 @@ class Generator:
     @staticmethod
     def color_from_tree(tree, defs):
         data = [x.data for x in tree.children]
-        if "color" in data:
-            c_tree = Generator.find_in_tree(tree, "color")
+        if ATTRIBS.COLOR.value in data:
+            c_tree = Generator.find_in_tree(tree, ATTRIBS.COLOR.value)
             color_type = c_tree[0].data
             c_token = c_tree[0].children[0]
-            if color_type == "identifier":
+            if color_type == ATTRIBS.IDENTIFIER.value:
                 cID = c_token.value
                 color = defs.get_color(cID)
                 if color == None:
                     Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + cID + "' in text color")
                 return color
-            elif color_type == "hex_color":
+            elif color_type == ATTRIBS.HEX_COLOR.value:
                 return str(c_token.value)
         return None
 
     @staticmethod
     def font_from_tree(tree, defs):
         data = [x.data for x in tree.children]
-        if "font" in data:
-            f_tree = Generator.find_in_tree(tree, "font")
+        if ATTRIBS.FONT.value in data:
+            f_tree = Generator.find_in_tree(tree, ATTRIBS.FONT.value)
             fID = f_tree[0].value
             font = defs.get_font(fID)
             if font == None:
@@ -148,7 +150,7 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Tree:
-                if Mname == "rotated":
+                if Mname == ATTRIBS.ROTATED.value:
                     return int(M.children[0].children[0].value)
         return 0
 
@@ -158,8 +160,8 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Tree:
-                if Mname == "clipped":
-                    if len(M.children) > 0 and M.children[0].children[0].value == "out":
+                if Mname == ATTRIBS.CLIPPED.value:
+                    if len(M.children) > 0 and M.children[0].children[0].value == CLIP_TYPE.OUT.value:
                         return Clip(False)
                     else:
                         return Clip(True)
@@ -171,16 +173,16 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Tree:
-                if Mname == "outlined":
+                if Mname == ATTRIBS.OUTLINED.value:
                     color_type = M.children[0].children[0].data
                     stroke_color = None
                     c_token = M.children[0].children[0].children[0]
-                    if color_type == "identifier":
+                    if color_type == ATTRIBS.IDENTIFIER.value:
                         cID = c_token
                         stroke_color = defs.get_color(cID)
                         if stroke_color == None:
                             Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + cID + "' in outline color")
-                    elif color_type == "hex_color":
+                    elif color_type == ATTRIBS.HEX_COLOR.value:
                         stroke_color = str(c_token.value)
                     thickness = int(M.children[1].children[0].value)
                     return Stroke(stroke_color, thickness, opacity=1)
@@ -190,18 +192,18 @@ class Generator:
     def stroke_from_tree(tree, defs):
         data = [x.data for x in tree.children]
         thickness = 1
-        color = "#000000"
-        if "thickness" in data:
-            thick_tree = Generator.find_in_tree(tree, "thickness")
+        color = DEFAULTS.FILL_COLOR
+        if ATTRIBS.THICKNESS.value in data:
+            thick_tree = Generator.find_in_tree(tree, ATTRIBS.THICKNESS.value)
             thickness = int(thick_tree[0].value)
-        if "color" in data:
-            color_tree = Generator.find_in_tree(tree, "color")[0]
+        if ATTRIBS.COLOR.value in data:
+            color_tree = Generator.find_in_tree(tree, ATTRIBS.COLOR.value)[0]
             c_token = color_tree.children[0]
-            if color_tree.data == "identifier":
+            if color_tree.data == ATTRIBS.IDENTIFIER.value:
                 color = defs.get_color(c_token.value)
                 if color == None:
                     Generator.exception(c_token.line, c_token.column, "Unrecognized color identifier '" + c_token.value + "' in outline color")
-            elif color_tree.data == "hex_color":
+            elif color_tree.data == ATTRIBS.HEX_COLOR.value:
                 color = str(c_token.value)
         return Stroke(color, thickness, 1.0)
 
@@ -211,11 +213,11 @@ class Generator:
             M = modifier.children[0]
             Mname = M.data if type(M) == Tree else M.value
             if type(M) == Token:
-                if Mname == "left":
-                    return "left"
-                elif Mname == "right":
-                    return "right"
-        return "center"
+                if Mname == STATIC_MODIFIER.LEFT.value:
+                    return STATIC_MODIFIER.LEFT.value
+                elif Mname == STATIC_MODIFIER.RIGHT.value:
+                    return STATIC_MODIFIER.RIGHT.value
+        return STATIC_MODIFIER.CENTER.value
 
     @staticmethod
     def validate_modifiers(tree, allowed_modifiers):
@@ -251,8 +253,8 @@ class RectGenerator(Generator):
 
     @staticmethod
     def from_parse_tree(tree, defs):
-        pos = Generator.find_in_tree(tree, "position")
-        size = Generator.find_in_tree(tree, "size")
+        pos = Generator.find_in_tree(tree, ATTRIBS.POSITION.value)
+        size = Generator.find_in_tree(tree, ATTRIBS.SIZE.value)
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         width = expression_from_tree(size[0])
@@ -261,7 +263,7 @@ class RectGenerator(Generator):
         children = Generator.children_from_tree(tree, defs)
         fill = Generator.fill_from_tree(tree, defs)
 
-        Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, ATTRIBS.CLIPPED.value, ATTRIBS.OUTLINED.value))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         clip = Generator.clip_from_tree_modifier(tree, defs)
@@ -288,7 +290,7 @@ class CircleGenerator(Generator):
 
     @staticmethod
     def from_parse_tree(tree, defs):
-        pos = Generator.find_in_tree(tree, "position")
+        pos = Generator.find_in_tree(tree, ATTRIBS.POSITION.value)
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         rad = expression_from_tree(tree.children[2])
@@ -296,7 +298,7 @@ class CircleGenerator(Generator):
         children = Generator.children_from_tree(tree, defs)
         fill = Generator.fill_from_tree(tree, defs)
 
-        Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, ATTRIBS.CLIPPED.value, ATTRIBS.OUTLINED.value))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         clip = Generator.clip_from_tree_modifier(tree, defs)
@@ -324,7 +326,7 @@ class EllipseGenerator(Generator):
     
     @staticmethod
     def from_parse_tree(tree, defs):
-        pos = Generator.find_in_tree(tree, "position")
+        pos = Generator.find_in_tree(tree, ATTRIBS.POSITION.value)
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         xrad = expression_from_tree(tree.children[2])
@@ -333,7 +335,7 @@ class EllipseGenerator(Generator):
         children = Generator.children_from_tree(tree, defs)
         fill = Generator.fill_from_tree(tree, defs)
 
-        Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, ATTRIBS.CLIPPED.value, ATTRIBS.OUTLINED.value))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         clip = Generator.clip_from_tree_modifier(tree, defs)
@@ -383,13 +385,13 @@ class PolygonGenerator(Generator):
     def from_parse_tree(tree, defs):
         points = []
         for T in tree.children:
-            if T.data == "position":
+            if T.data == ATTRIBS.POSITION.value:
                 points.append((expression_from_tree(T.children[0]), expression_from_tree(T.children[1])))
 
         children = Generator.children_from_tree(tree, defs)
         fill = Generator.fill_from_tree(tree, defs)
 
-        Generator.validate_modifiers(tree, ("rotated", "clipped", "outlined"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, ATTRIBS.CLIPPED.value, ATTRIBS.OUTLINED.value))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         clip = Generator.clip_from_tree_modifier(tree, defs)
@@ -420,7 +422,7 @@ class ImageGenerator(Generator):
 
     @staticmethod
     def from_parse_tree(tree, defs):
-        pos = Generator.find_in_tree(tree, "position")
+        pos = Generator.find_in_tree(tree, ATTRIBS.POSITION.value)
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         width = expression_from_tree(tree.children[2])
@@ -429,17 +431,17 @@ class ImageGenerator(Generator):
         if len(tree.children) > 4:
             height = expression_from_tree(tree.children[3])
 
-        path_tree = Generator.find_in_tree(tree, "path")
+        path_tree = Generator.find_in_tree(tree, ATTRIBS.PATH.value)
         path = path_tree[0].value[1:-1]
 
-        Generator.validate_modifiers(tree, ("rotated"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value))
         
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
 
         return ImageGenerator(x, y, width, height, path, rotate)
 
 class TextGenerator(Generator):
-    def __init__(self, x, y, text, font, color, align="center", width_expr=None, rotate=0):
+    def __init__(self, x, y, text, font, color, align=STATIC_MODIFIER.CENTER.value, width_expr=None, rotate=0):
         self.x, self.y = x, y
         self.text = text
         self.font = font
@@ -454,9 +456,9 @@ class TextGenerator(Generator):
             width = self.width_expr.eval(pw, ph)
         
         align = Anchor.CENTER
-        if self.align == "left":
+        if self.align == STATIC_MODIFIER.LEFT.value:
             align = Anchor.LEFT
-        elif self.align == "right":
+        elif self.align == STATIC_MODIFIER.RIGHT.value:
             align = Anchor.RIGHT
 
         pos = Vector2(self.x.eval(pw, ph), self.y.eval(pw, ph))
@@ -466,22 +468,22 @@ class TextGenerator(Generator):
     def from_parse_tree(tree, defs):
         data = [x.data for x in tree.children]
 
-        pos = Generator.find_in_tree(tree, "position")
+        pos = Generator.find_in_tree(tree, ATTRIBS.POSITION.value)
         x = expression_from_tree(pos[0])
         y = expression_from_tree(pos[1])
         color = Generator.color_from_tree(tree, defs)
         font = Generator.font_from_tree(tree, defs)
 
         width_expr = None
-        if "expression" in data:
+        if ATTRIBS.EXPRESSION.value in data:
             width_expr = expression_from_tree(tree.children[4])
 
-        Generator.validate_modifiers(tree, ("rotated", "left", "center", "right"))
+        Generator.validate_modifiers(tree, (ATTRIBS.ROTATED.value, STATIC_MODIFIER.LEFT.value, STATIC_MODIFIER.CENTER.value, STATIC_MODIFIER.RIGHT.value))
 
         rotate = Generator.rotate_from_tree_modifier(tree, defs)
         align = Generator.align_from_tree_modifier(tree, defs)
 
-        content_tree = Generator.find_in_tree(tree, "content")
+        content_tree = Generator.find_in_tree(tree, ATTRIBS.CONTENT.value)
         text = content_tree[0].value[1:-1]
 
         return TextGenerator(x, y, text, font, color, align, width_expr, rotate)
